@@ -1,0 +1,22 @@
+
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { About } from "../pages/About/About";
+import { Converter } from "../pages/Converter/Converter";
+import { Home } from "../pages/Home/Home";
+import { Layout } from "../pages/Layout/Layout";
+
+export const AppRouter = () => {
+  return (
+    <BrowserRouter>
+        <Routes>
+            <Route path="/" element={ <Layout /> }>
+                <Route index element={ <Home /> } />
+                <Route path="/converter" element={ <Converter /> } />
+                <Route path="/about" element={ <About /> } />
+
+                <Route path="*" element={ <Navigate replace to="/" /> } />
+            </Route>
+        </Routes>
+    </BrowserRouter>
+  )
+}
