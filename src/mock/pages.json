@@ -1,0 +1,17 @@
+[
+    {
+      "id": 1,
+      "name": "Market cap",
+      "path": "/"
+    },
+    {
+      "id": 2,
+      "name": "Converter",
+      "path": "/converter"
+    },
+    {
+      "id": 3,
+      "name": "About",
+      "path": "/about"
+    }
+  ]
