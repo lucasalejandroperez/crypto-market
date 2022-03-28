@@ -35,7 +35,9 @@ export const Home = () => {
     <div>
       {
         marketCap?.map( ( coin: ICoinGeckoInterfaces ) => (
-          <div>
+          <div
+            key={ coin.id }
+          >
             { coin.name } - { coin.market_cap }
           </div>
         ))
