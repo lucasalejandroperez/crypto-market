@@ -1,0 +1,88 @@
+.coinMarketItem__name {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.coinMarketItem__symbol {
+    font-size: 10px;
+}
+
+.coinMarketItem__price-label {
+    font-weight: 500;
+}
+
+.coinMarketItem__high-label {
+    font-weight: 500;
+}
+
+.coinMarketItem__low-label {
+    font-weight: 500;
+}
+
+.coinMarketItem__marketcap-label {
+    font-weight: 500;
+}
+
+.coinMarketItem__circulatingSupply-label {
+    font-weight: 500;
+}
+
+.coinMarketItem__totalSupply-label {
+    font-weight: 500;
+}
+
+.coinMarketItem__marketCapChange24-label {
+    font-weight: 500;
+}
+
+.coinMarketItem__priceChange1h-label {
+    font-weight: 500;
+}
+
+.coinMarketItem__priceChange24h-label {
+    font-weight: 500;
+}
+
+.coinMarketItem__priceChange7d-label {
+    font-weight: 500;
+}
+
+.coinMarketItem__priceChange14d-label {
+    font-weight: 500;
+}
+
+.coinMarketItem__box {
+    border-bottom: 1px solid grey;
+    border-left: 1px solid rgb(218, 218, 218);
+    border-right: 1px solid grey;
+    border-top: 1px solid rgb(218, 218, 218);
+}
+
+.coinMarketItem__box:hover {
+    border-bottom: 1px solid rgb(51, 72, 194);
+        border-left: 1px solid rgb(51, 72, 194);
+        border-right: 1px solid rgb(51, 72, 194);
+        border-top: 1px solid rgb(51, 72, 194);
+}
+
+.coinMarketItem__green {
+    color: green;
+    font-weight: 400;
+}
+
+.coinMarketItem__red {
+    color: red;
+    font-weight: 400;
+}
+
+.coinMarketItem__importantNumber {
+    font-weight: 400;
+}
+
+.coinMarketItem__percentageBox {
+    border: 1px solid black;
+}
+
+.coinMarketItem__marketcap-box {
+    background-color: rgb(241, 240, 240);
+}

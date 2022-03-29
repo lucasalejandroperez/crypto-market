@@ -16,7 +16,7 @@ export const NavBar = () => {
                     variant="h6"
                     sx={{ flexGrow: 1 }}
                 >
-                { consts.GENERAL.Title.toUpperCase() }
+                { consts.GENERAL.TITLE.toUpperCase() }
                 </Typography>
 
                 <Box
