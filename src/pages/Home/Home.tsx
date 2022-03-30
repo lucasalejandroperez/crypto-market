@@ -4,6 +4,7 @@ import { ICoinGeckoInterfaces } from "../../models/coinGeckoInterfaces";
 import { consts } from '../../consts/consts';
 import { MarketCapItem } from "./MarketCapItem";
 import { useEffect, useState } from "react";
+import { MarketCapList } from "./MarketCapList";
 
 export const Home = () => {
 
@@ -16,62 +17,10 @@ export const Home = () => {
     { label: 'Rank descending', value: 'id_desc'},
     { label: 'Volume descending', value: 'volume_desc'}
   ];
-
-  const {
-      data: marketCap, 
-      error, 
-      isLoading, 
-      isError, 
-      isSuccess, 
-      status, 
-      isIdle, 
-      isFetching,
-      refetch 
-  } = useMarketCap(selectOrderBy);
-
-  const { 
-    mutate, 
-    error:errorMutate, 
-    isLoading:isLoadingMutate, 
-    isSuccess:isSuccessMutate, 
-    //mutateAsync,
-    reset
-  } = useMutateMarketData(selectOrderBy);
-
+  
   const handleChangeOrderBy = (event: SelectChangeEvent) => {
     setSelectOrderBy( event.target.value );
   };
-
-  useEffect(() => {
-    
-    refetch();
-
-  }, [selectOrderBy])
-  
-  
-  if ( isLoading ) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    )
-  }
-
-  if ( isLoadingMutate ) {
-    return (
-      <div>
-        <h1>Loading mutate...</h1>
-      </div>
-    )
-  }
-
-  if ( error ) {
-    return (
-      <section>
-        Error fetching market cap: { error.message }
-      </section>
-    )
-  }
 
   return (
     <div>
@@ -103,17 +52,8 @@ export const Home = () => {
             </Select>
           </FormControl>
         </div>
-      <div className="col-12 mt-4 mb-4">
-            <div className="text-center">{ consts.HOME.SUBTITLE }</div>
-            {
-              marketCap &&
-                marketCap.map( (coin: ICoinGeckoInterfaces) => (
-                    <MarketCapItem
-                        key={ coin.id }
-                        { ...coin }
-                    />   
-                ))
-            }
+        <div className="col-12 mt-4 mb-4">
+            <MarketCapList selectOrderBy={ selectOrderBy } />
         </div>
 
     </div>
