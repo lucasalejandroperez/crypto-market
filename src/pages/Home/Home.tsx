@@ -105,7 +105,6 @@ export const Home = () => {
         </div>
       <div className="col-12 mt-4 mb-4">
             <div className="text-center">{ consts.HOME.SUBTITLE }</div>
-
             {
               marketCap &&
                 marketCap.map( (coin: ICoinGeckoInterfaces) => (
@@ -115,7 +114,6 @@ export const Home = () => {
                     />   
                 ))
             }
-
         </div>
 
     </div>
