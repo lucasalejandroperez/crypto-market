@@ -11,6 +11,11 @@
     },
     {
       "id": 3,
+      "name": "Heat Map",
+      "path": "/heatmap"
+    },
+    {
+      "id": 4,
       "name": "About",
       "path": "/about"
     }

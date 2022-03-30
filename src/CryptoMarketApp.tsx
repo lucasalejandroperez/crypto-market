@@ -2,6 +2,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import { blue, red } from "@mui/material/colors";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AppRouter } from "./routes/AppRouter";
+
 import './styles/general.css';
 
 export const CryptoMarketApp = () => {
