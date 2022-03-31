@@ -22,23 +22,25 @@ export const Home = () => {
 
   return (
     <div>
-        <div className="mt-3 ">
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Order</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={ orderBy }
-              label="Age"
-              onChange={ handleChangeOrderBy }
-            >
-              {
-                optionsOrderBy.map( option => (
-                  <MenuItem key={ option.value } value={ option.value }>{ option.label }</MenuItem>    
-                ))
-              }
-            </Select>
-          </FormControl>
+        <div className="mt-3">
+          <div className="d-flex justify-content-center">
+            <FormControl>
+              <InputLabel id="demo-simple-select-label">Order</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={ orderBy }
+                label="Age"
+                onChange={ handleChangeOrderBy }
+              >
+                {
+                  optionsOrderBy.map( option => (
+                    <MenuItem key={ option.value } value={ option.value }>{ option.label }</MenuItem>    
+                  ))
+                }
+              </Select>
+            </FormControl>
+          </div>
         </div>
         <div className="col-12 mt-4 mb-4">
             <MarketCapList />
