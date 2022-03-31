@@ -1,6 +1,7 @@
 import { createTheme, ThemeProvider } from "@mui/material";
-import { blue } from "@mui/material/colors";
+import { blue, grey } from "@mui/material/colors";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { isWhiteSpaceLike } from "typescript";
 import { MarketCapProvider } from "./context/marketCap/MarketCapProvider";
 import { AppRouter } from "./routes/AppRouter";
 
@@ -14,9 +15,12 @@ export const CryptoMarketApp = () => {
     palette: {
       primary: {
         main: blue[500],
+        light: '#ffffff',
+        dark: '#007bff',
+        contrastText:  '#ffffff'
       },
       secondary: {
-        main: blue[50]
+        main: grey[50]
       }
     },
   });

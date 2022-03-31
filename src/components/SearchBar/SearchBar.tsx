@@ -46,9 +46,9 @@ export const SearchBar = () => {
                 <TextField 
                     id="outlined-basic" 
                     label="Search a crypto coin..." 
-                    color="secondary" 
+                    color="primary" 
                     placeholder="Search a crypto coin..." 
-                    variant="outlined" 
+                    variant="filled" 
                     onChange={ handleOnChange }
                     onBlur={ handleOnBlur }
                 />
