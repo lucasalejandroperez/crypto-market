@@ -36,4 +36,3 @@ export interface IRoi {
     currency:   string
     percentage: number;
 }
-

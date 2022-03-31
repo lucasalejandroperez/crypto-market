@@ -1,6 +1,7 @@
 import { createTheme, ThemeProvider } from "@mui/material";
-import { blue, red } from "@mui/material/colors";
+import { blue } from "@mui/material/colors";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { MarketCapProvider } from "./context/marketCap/MarketCapProvider";
 import { AppRouter } from "./routes/AppRouter";
 
 import './styles/general.css';
@@ -14,13 +15,18 @@ export const CryptoMarketApp = () => {
       primary: {
         main: blue[500],
       },
+      secondary: {
+        main: blue[50]
+      }
     },
   });
 
   return (
     <QueryClientProvider client={ queryClient }>
       <ThemeProvider theme={ theme }>
-        <AppRouter />
+        <MarketCapProvider>
+          <AppRouter />
+        </MarketCapProvider>
       </ThemeProvider>      
     </QueryClientProvider>
   )

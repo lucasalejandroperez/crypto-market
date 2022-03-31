@@ -1,10 +1,12 @@
 
-import { AppBar, Box, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box,  Toolbar, Typography } from "@mui/material";
 import { IPageRoute } from "../../models/IPageRoute";
 import { CustomButtonLink } from "../CustomButtonLink/CustomButtonLink";
 import { consts } from '../../consts/consts';
 import pages from '../../mock/pages.json';
 import { IconNavBar } from "./IconNavBar";
+import { ChangeEvent } from "react";
+import { SearchBar } from "../SearchBar/SearchBar";
 
 export const NavBar = () => {
 
@@ -18,6 +20,8 @@ export const NavBar = () => {
                 >
                 { consts.GENERAL.TITLE.toUpperCase() }
                 </Typography>
+                
+                <SearchBar />
 
                 <Box
                 sx={{ display: { xs: 'none', sm: 'flex' } }}

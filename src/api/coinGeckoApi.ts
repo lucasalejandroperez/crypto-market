@@ -1,5 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { ICoinGeckoInterfaces } from '../models/coinGeckoInterfaces';
+import { ICoin } from '../models/coinInterfaces';
+import { ISearchCoinInterfaces } from '../models/searchCoinInterfaces';
 
 axios.defaults.baseURL = process.env.REACT_APP_COINGECKO_BASE_URL;
 
@@ -26,7 +28,11 @@ const requests = {
 
 const CoinGecko = {
     markets: ( orderBy:string ): Promise<ICoinGeckoInterfaces[]> => 
-        requests.get(`/markets?vs_currency=usd&order=${ orderBy }&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C14d`)
+        requests.get(`/coins/markets?vs_currency=usd&order=${ orderBy }&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C14d`),
+    searchCoins: ( description:string ): Promise<ISearchCoinInterfaces> => 
+        requests.get(`/search?query=${ description }`),
+    getCoin: ( id:string ): Promise<ICoin> => 
+        requests.get(`/coins/${ id }?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`)
 }
 
 export const coinGeckoApi = axios.create();

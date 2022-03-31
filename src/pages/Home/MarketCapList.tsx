@@ -1,10 +1,14 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { Loader } from "../../components/Loader/Loader";
 import { consts } from "../../consts/consts"
+import { MarketCapContext } from "../../context/marketCap/MarketCapContext";
 import { useMarketCap, useMutateMarketData } from "../../hooks/useMarketCap";
 import { ICoinGeckoInterfaces } from "../../models/coinGeckoInterfaces";
 import { MarketCapItem } from "./MarketCapItem";
 
-export const MarketCapList = ( selectOrderBy:any ) => {
+export const MarketCapList = () => {
+
+    const { orderBy } = useContext(MarketCapContext);
 
     const {
         data: marketCap, 
@@ -16,60 +20,44 @@ export const MarketCapList = ( selectOrderBy:any ) => {
         isIdle, 
         isFetching,
         refetch 
-    } = useMarketCap(selectOrderBy);
+    } = useMarketCap(orderBy);
   
-    const { 
-      mutate, 
-      error:errorMutate, 
-      isLoading:isLoadingMutate, 
-      isSuccess:isSuccessMutate, 
-      //mutateAsync,
-      reset
-    } = useMutateMarketData(selectOrderBy);
-
     useEffect(() => {
-    
-    refetch();
-
-    }, [selectOrderBy])
+        refetch();
+    }, [orderBy])
   
-    
 
     if ( isLoading ) {
         return (
-          <div>
-            <h1>Loading...</h1>
-          </div>
+            <Loader />
         )
-      }
-    
-      if ( isLoadingMutate ) {
+    }
+
+    if ( isFetching ) {
         return (
-          <div>
-            <h1>Loading mutate...</h1>
-          </div>
+          <Loader />
         )
-      }
+    }
     
-      if ( error ) {
+    if ( error ) {
         return (
           <section>
             Error fetching market cap: { error.message }
           </section>
         )
-      }
+    }
 
   return (
     <div>
         <div className="text-center">{ consts.HOME.SUBTITLE }</div>
         {
-        marketCap &&
-            marketCap.map( (coin: ICoinGeckoInterfaces) => (
-                <MarketCapItem
-                    key={ coin.id }
-                    { ...coin }
-                />   
-            ))
+            marketCap &&
+                marketCap.map( (coin: ICoinGeckoInterfaces) => (
+                    <MarketCapItem
+                        key={ coin.id }
+                        { ...coin }
+                    />   
+                ))
         }
     </div>
   )

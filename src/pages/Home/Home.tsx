@@ -1,14 +1,12 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
-import { useMarketCap, useMutateMarketData } from '../../hooks/useMarketCap';
-import { ICoinGeckoInterfaces } from "../../models/coinGeckoInterfaces";
+import { useContext } from "react";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { consts } from '../../consts/consts';
-import { MarketCapItem } from "./MarketCapItem";
-import { useEffect, useState } from "react";
 import { MarketCapList } from "./MarketCapList";
+import { MarketCapContext } from "../../context/marketCap/MarketCapContext";
 
 export const Home = () => {
 
-  const [selectOrderBy, setSelectOrderBy] = useState('market_cap_desc');
+  const { orderBy, setOrderBy } = useContext(MarketCapContext);
 
   const optionsOrderBy = [
     { label: 'Market cap ascending', value: 'market_cap_asc'},
@@ -19,28 +17,18 @@ export const Home = () => {
   ];
   
   const handleChangeOrderBy = (event: SelectChangeEvent) => {
-    setSelectOrderBy( event.target.value );
+    setOrderBy( event.target.value );
   };
 
   return (
     <div>
-        <div className="container mb-2">
-            <input 
-                name="searchCoin" 
-                type="search" 
-                className="form-control" 
-                placeholder={ consts.HOME.SEARCH } 
-                autoComplete="false"
-                // onChange={ handleOnChangeCoin }
-            />
-        </div>
-        <div>
+        <div className="mt-3 ">
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Order</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={ selectOrderBy }
+              value={ orderBy }
               label="Age"
               onChange={ handleChangeOrderBy }
             >
@@ -53,9 +41,8 @@ export const Home = () => {
           </FormControl>
         </div>
         <div className="col-12 mt-4 mb-4">
-            <MarketCapList selectOrderBy={ selectOrderBy } />
+            <MarketCapList />
         </div>
-
     </div>
   )
 }
