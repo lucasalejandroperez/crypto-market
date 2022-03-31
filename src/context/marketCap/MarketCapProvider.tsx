@@ -9,11 +9,13 @@ interface Props {
 export interface MarketCapState {
     searchDescription: string;
     orderBy: string;
+    coinId: string;
 }
 
 const INITIAL_STATE: MarketCapState = {
     searchDescription: '',
     orderBy: 'market_cap_desc',
+    coinId: 'bitcoin'
 }
 
 export const MarketCapProvider = ( { children }:Props ) => {
@@ -30,6 +32,12 @@ export const MarketCapProvider = ( { children }:Props ) => {
         dispatch({ type: 'setOrderBy', payload: orderBy });
     }
 
+    const setCoinId = ( id:string ) => {
+
+        dispatch({ type: 'setCoinId', payload: id });
+
+    }
+
     return (
         <MarketCapContext.Provider value={{
             ...state,
@@ -37,6 +45,7 @@ export const MarketCapProvider = ( { children }:Props ) => {
             // Methods
             setSearchDescription,
             setOrderBy,
+            setCoinId,
         }}>
             { children }
         </MarketCapContext.Provider>

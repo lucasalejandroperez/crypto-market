@@ -5,7 +5,7 @@ export const consts = {
     },
     HOME: {
         SEARCH: 'Filter a crypto coin',
-        SUBTITLE: 'Top 100 Cryptocurrency Prices order by Market Cap',
+        SUBTITLE: 'Top 100 Cryptocurrency Prices',
         MARKET_CAP: 'Market Cap',
         CHANGE_IN_LAST_24H: 'change in the last 24h',
         CURRENT_PRICE: 'Current Price',

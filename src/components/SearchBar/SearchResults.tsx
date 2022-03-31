@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { MarketCapContext } from "../../context/marketCap/MarketCapContext";
 import { useSearchCoin } from "../../hooks/useSearchCoin";
 import { Coin } from "../../models/searchCoinInterfaces";
@@ -8,7 +9,9 @@ import './SearchBar.css';
 
 export const SearchResults = () => {
 
-    const { searchDescription } = useContext( MarketCapContext );
+    const { searchDescription, setCoinId } = useContext( MarketCapContext );
+
+    const navigate = useNavigate();
 
     const {
         data, 
@@ -27,7 +30,12 @@ export const SearchResults = () => {
     }, [searchDescription])
 
     const handleCoinClick = ( coin:Coin ) => {
-        console.log(coin);
+
+        console.log(coin.id);
+
+        setCoinId( coin.id );
+
+        navigate(`/coin/${ coin.id }`)
     }
 
     if ( error ) {
@@ -55,7 +63,9 @@ export const SearchResults = () => {
                             className={`list-group-item list-group-item-action pointer`  }
                             onClick={ () => handleCoinClick( coin ) }
                         >
-                            <span>{ coin.name }</span>
+                            <span
+                                onClick={ () => handleCoinClick( coin ) }
+                            >{ coin.name }</span>
                             {
                                 coin.market_cap_rank && 
                                     <span className="ml-1"><small>({ coin.market_cap_rank })</small></span>
