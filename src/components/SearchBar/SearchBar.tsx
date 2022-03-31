@@ -37,7 +37,7 @@ export const SearchBar = () => {
     const handleOnBlur = () => {
         setTimeout(() => {
             setShowSearch( false );
-        }, 100);
+        }, 500);
     }
 
     return (

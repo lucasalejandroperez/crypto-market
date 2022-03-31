@@ -1,26 +1,26 @@
-import { useContext, useEffect } from "react";
-import { useGetCoin } from "../../hooks/useGetCoin";
+import { useContext } from "react";
 import { MarketCapContext } from '../../context/marketCap/MarketCapContext';
 
 export const CoinDetail = () => {
 
-  const { coinId } = useContext( MarketCapContext );
+  const { coinId, coinDetail:coin } = useContext( MarketCapContext );
 
-  const {
-    data:coin, 
-    error, 
-    isLoading, 
-    isError, 
-    isSuccess, 
-    status, 
-    isIdle, 
-    isFetching,
-    refetch 
-  } = useGetCoin( coinId.toString() );
+  
+  // const {
+  //   data:coin, 
+  //   error, 
+  //   isLoading, 
+  //   isError, 
+  //   isSuccess, 
+  //   status, 
+  //   isIdle, 
+  //   isFetching,
+  //   refetch 
+  // } = useGetCoin( coinId.toString() );
 
-  useEffect(() => {
-    refetch();
-  }, [coinId]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [coinId]);
 
   return (
     <>
@@ -30,7 +30,7 @@ export const CoinDetail = () => {
           <div>CoinDetail</div>
           <div>{ coin.name }</div>
           <div>{ coin.symbol }</div>
-          <div>{ coin.description.en }</div>
+          {/* <div>{ coin.description.en }</div>
           <div>{ coin.links.homepage }</div>
           <div>{ coin.image.thumb }</div>
           <div>{ coin.image.large }</div>
@@ -55,7 +55,7 @@ export const CoinDetail = () => {
           <div>{ coin.market_data.max_supply }</div>
           <div>{ coin.market_data.circulating_supply }</div>
           <div>{ coin.categories }</div>
-          <div>{ coin.block_time_in_minutes }</div>
+          <div>{ coin.block_time_in_minutes }</div> */}
         </div>
       }
     </>
