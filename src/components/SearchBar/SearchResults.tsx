@@ -30,18 +30,6 @@ export const SearchResults = () => {
         console.log(coin);
     }
 
-    if ( isLoading ) {
-        return (
-            <Loader />
-        )
-    }
-
-    if ( isFetching ) {
-        return (
-          <Loader />
-        )
-    }
-    
     if ( error ) {
         return (
           <section>
@@ -51,8 +39,13 @@ export const SearchResults = () => {
     }
 
     return (
-        <div>
-            <ul className="list-group mt-3">
+        <div className="search-results">
+            <ul className="list-group search-items mt-3">
+
+                {
+                    isLoading && <Loader />
+                }
+
                 {
                     data && data.coins &&
                     data.coins.map( coin => (
@@ -62,13 +55,22 @@ export const SearchResults = () => {
                             className={`list-group-item list-group-item-action pointer`  }
                             onClick={ () => handleCoinClick( coin ) }
                         >
-                            <h6>{ coin.name }</h6>
+                            <span>{ coin.name }</span>
+                            {
+                                coin.market_cap_rank && 
+                                    <span className="ml-1"><small>({ coin.market_cap_rank })</small></span>
+                            }
                             <p 
                                 style={{
                                     fontSize: '12px'
                                 }}
                             >
-                                { coin.symbol }
+                                <span className="mr-1">
+                                    <img src={ coin.thumb } alt="coin logo" />
+                                </span>
+                                <span>
+                                    { coin.symbol }
+                                </span>
                             </p>
                         </li>
                     ))

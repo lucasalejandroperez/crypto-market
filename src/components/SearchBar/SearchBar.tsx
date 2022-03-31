@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material'
-import { ChangeEvent, useContext, useRef } from 'react';
+import { ChangeEvent, useContext, useRef, useState } from 'react';
 import { MarketCapContext } from '../../context/marketCap/MarketCapContext';
 import { SearchResults } from './SearchResults';
 
@@ -11,41 +11,52 @@ export const SearchBar = () => {
 
     const { setSearchDescription, searchDescription } = useContext( MarketCapContext );
 
+    const [showSearch, setShowSearch] = useState( false );
+
     const handleOnChange = ( event: ChangeEvent<HTMLInputElement> ) => {
 
         const description = event.target.value;
 
-        // TODO: Only do it if press 3 characters or more
-        if (description.length < 3) {
+        if (description.length < 2) {
+            setShowSearch( false );
             return;
         }
+        
+        setShowSearch( true );
         
         if ( debouncedRef.current ) {
             clearTimeout( debouncedRef.current );
         }
 
         debouncedRef.current = setTimeout(() => {
-
-        setSearchDescription( event.target.value );
-        
-      }, 1000 );
+            setSearchDescription( event.target.value );
+        }, 1000 );
 
     }
 
-    return (
-        <div className="search-container">
-            <TextField 
-                id="outlined-basic" 
-                label="Search a crypto coin..." 
-                color="secondary" 
-                placeholder="Search a crypto coin..." 
-                variant="outlined" 
-                onChange={ handleOnChange }
-            />
+    const handleOnBlur = () => {
+        setTimeout(() => {
+            setShowSearch( false );
+        }, 100);
+    }
 
-            {
-                searchDescription.length > 2 && <SearchResults />
-            }
-        </div>
+    return (
+        <>
+            <div className="search-container">
+                <TextField 
+                    id="outlined-basic" 
+                    label="Search a crypto coin..." 
+                    color="secondary" 
+                    placeholder="Search a crypto coin..." 
+                    variant="outlined" 
+                    onChange={ handleOnChange }
+                    onBlur={ handleOnBlur }
+                />
+                {
+                    showSearch && 
+                    searchDescription.length > 2 && <SearchResults />
+                }
+            </div>
+        </>
     )
 }
