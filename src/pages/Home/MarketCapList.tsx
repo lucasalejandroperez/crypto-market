@@ -32,12 +32,6 @@ export const MarketCapList = () => {
             <Loader />
         )
     }
-
-    if ( isFetching ) {
-        return (
-          <Loader />
-        )
-    }
     
     if ( error ) {
         return (
