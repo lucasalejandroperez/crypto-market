@@ -4,13 +4,12 @@ import { MarketCapContext } from "../../context/marketCap/MarketCapContext";
 import { useSearchCoin } from "../../hooks/useSearchCoin";
 import { Coin } from "../../models/searchCoinInterfaces";
 import { Loader } from "../Loader/Loader";
-import CoinGecko from "../../api/coinGeckoApi";
 
 import './SearchBar.css';
 
 export const SearchResults = () => {
 
-    const { searchDescription, setCoinId, setCoin } = useContext( MarketCapContext );
+    const { searchDescription } = useContext( MarketCapContext );
 
     const navigate = useNavigate();
 
@@ -31,13 +30,6 @@ export const SearchResults = () => {
     }, [searchDescription])
 
     const handleCoinClick = async( coin:Coin ) => {
-
-        console.log(coin.id);
-        
-        const detailCoin = await CoinGecko.CoinGecko.getCoin( coin.id );
-
-        setCoin( detailCoin );
-
         navigate(`/coin/${ coin.id }`)
     }
 

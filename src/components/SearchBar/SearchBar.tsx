@@ -35,6 +35,10 @@ export const SearchBar = () => {
     }
 
     const handleOnBlur = () => {
+        
+        // TODO: Move to context?
+        // el problema es que cuando hace un onBlur y le pone que se oculte, no se termina ejecutando la accion en el search result para que haga la navegacion
+
         setTimeout(() => {
             setShowSearch( false );
         }, 500);
