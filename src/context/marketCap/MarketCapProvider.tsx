@@ -10,11 +10,13 @@ interface Props {
 export interface MarketCapState {
     searchDescription: string;
     orderBy: string;
+    showSearch: boolean;
 }
 
 const INITIAL_STATE: MarketCapState = {
     searchDescription: '',
-    orderBy: 'market_cap_desc'
+    orderBy: 'market_cap_desc',
+    showSearch: false
 }
 
 export const MarketCapProvider = ( { children }:Props ) => {
@@ -29,6 +31,10 @@ export const MarketCapProvider = ( { children }:Props ) => {
         dispatch({ type: 'setOrderBy', payload: orderBy });
     }
 
+    const setShowSearch = ( showSearch: boolean ) => {
+        dispatch({ type: 'setShowSearch', payload: showSearch });
+    }
+
     return (
         <MarketCapContext.Provider value={{
             ...state,
@@ -36,6 +42,7 @@ export const MarketCapProvider = ( { children }:Props ) => {
             // Methods
             setSearchDescription,
             setOrderBy,
+            setShowSearch
         }}>
             { children }
         </MarketCapContext.Provider>

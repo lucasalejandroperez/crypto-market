@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material'
-import { ChangeEvent, useContext, useRef, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
 import { MarketCapContext } from '../../context/marketCap/MarketCapContext';
 import { SearchResults } from './SearchResults';
 
@@ -9,9 +9,18 @@ export const SearchBar = () => {
 
     const debouncedRef = useRef<NodeJS.Timeout>();
 
-    const { setSearchDescription, searchDescription } = useContext( MarketCapContext );
+    const { setSearchDescription, searchDescription, showSearch, setShowSearch } = useContext( MarketCapContext );
 
-    const [showSearch, setShowSearch] = useState( false );
+    //const [showSearch, setShowSearch] = useState( false );
+
+    // useEffect(() => {
+    
+    //   return () => {
+    //     setShowSearch( false );
+    //   }
+    // }, [])
+    
+    
 
     const handleOnChange = ( event: ChangeEvent<HTMLInputElement> ) => {
 
@@ -37,8 +46,8 @@ export const SearchBar = () => {
     const handleOnBlur = () => {
         
         // TODO: Move to context?
-        // el problema es que cuando hace un onBlur y le pone que se oculte, no se termina ejecutando la accion en el search result para que haga la navegacion
-
+        // el problema es que cuando hace un onBlur y le pone que se oculte, 
+        // no se termina ejecutando la accion en el search result para que haga la navegacion
         setTimeout(() => {
             setShowSearch( false );
         }, 500);
@@ -57,7 +66,7 @@ export const SearchBar = () => {
                     onBlur={ handleOnBlur }
                 />
                 {
-                    showSearch && 
+                    showSearch &&
                     searchDescription.length > 2 && <SearchResults />
                 }
             </div>

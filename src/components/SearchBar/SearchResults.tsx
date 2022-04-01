@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MarketCapContext } from "../../context/marketCap/MarketCapContext";
 import { useSearchCoin } from "../../hooks/useSearchCoin";
@@ -9,7 +9,7 @@ import './SearchBar.css';
 
 export const SearchResults = () => {
 
-    const { searchDescription } = useContext( MarketCapContext );
+    const { searchDescription, showSearch, setShowSearch } = useContext( MarketCapContext );
 
     const navigate = useNavigate();
 
@@ -28,9 +28,27 @@ export const SearchResults = () => {
     useEffect(() => {
         refetch();
     }, [searchDescription])
+    
+    useLayoutEffect(() => {
+      
+        if (showSearch) {
+            console.log('mostrar');
+        }
+        else {
+            console.log('ocultar');
+            
+        }
+
+    }, [showSearch]);
 
     const handleCoinClick = async( coin:Coin ) => {
-        navigate(`/coin/${ coin.id }`)
+        
+        navigate(`/coin/${ coin.id }`);
+
+        
+        setShowSearch( false );
+        
+        
     }
 
     if ( error ) {
@@ -40,6 +58,8 @@ export const SearchResults = () => {
           </section>
         )
     }
+
+
 
     return (
         <div className="search-results">
