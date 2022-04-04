@@ -51,7 +51,7 @@ export const CoinDetail = () => {
   }
 
 
-  
+  // TODO: Move to another place, in the same component of contracts maybe?
   const getContracts = ( contracts:any ): IContractPlatformType[] => {
     let contractList:IContractPlatformType[] = [];
 
@@ -61,11 +61,31 @@ export const CoinDetail = () => {
         key,
         valor: value
       };
-      contractList.push(newContract);
+
+      if (newContract.key.trim() !== '' && newContract.valor !== '') {
+        contractList.push(newContract);
+      }
 
     }
 
     return contractList;
+  }
+
+  const isInvalidContract = ( contracts:any ): boolean => {
+
+    let isInvalid = false;
+
+    for (const [key, value] of Object.entries(contracts)) {
+      
+      if (key.trim() === '' && value === '') {
+        isInvalid = true;
+        break;
+      }
+
+    }
+
+    return isInvalid;
+
   }
 
   // TODO: Move to utils
@@ -116,11 +136,14 @@ export const CoinDetail = () => {
               <Grid item xs={ 12 }>
 
                 {/* It must be a component */}
-                <Typography component="span" mr={ 1 }>
-                  { consts.DETAIL.TAGS }: 
-                </Typography>
                 {
-                  coin.categories.map( tag => (
+                  coin.categories && coin.categories.length > 0 &&
+                  <Typography component="span" mr={ 1 }>
+                    {  consts.DETAIL.TAGS }:
+                  </Typography>
+                }
+                {
+                  coin.categories.filter(category => category && category !== null).map( tag => (
                     <Typography 
                       mr={ 1 } 
                       component="span" 
@@ -136,8 +159,13 @@ export const CoinDetail = () => {
 
               </Grid>
               <Grid item xs={ 12 }>
-
-                { consts.DETAIL.CONTRACTS }:
+                
+                {
+                  !isInvalidContract(coin.platforms) &&
+                    <Typography component="span">
+                      {  consts.DETAIL.CONTRACTS }
+                    </Typography>
+                }
 
                 {/* TODO: It must be a component */}
                 {
@@ -163,18 +191,23 @@ export const CoinDetail = () => {
               </Grid>
 
               <Grid item xs={ 12 }>
-                  { consts.DETAIL.SITE }:  
-                  {
-                    coin.links?.homepage.length > 0 && 
-                      <Chip 
-                        clickable 
-                        avatar={ <img src="../assets/images/weblink.png" width="15" height="15" alt="link" /> }
-                        label={ `${ coin.links?.homepage[0] }` } 
-                        component="a" 
-                        href={ `${ coin.links?.homepage[0] }` } 
-                        sx={{ marginLeft: 1 }}
-                      />
-                  }
+                {
+                  coin.links && coin.links.homepage && coin.links.homepage.length > 0 &&
+                  <Typography component="span">
+                    { consts.DETAIL.SITE }:  
+                  </Typography>
+                }
+                {
+                  coin.links?.homepage.length > 0 && 
+                    <Chip 
+                      clickable 
+                      avatar={ <img src="../assets/images/weblink.png" width="15" height="15" alt="link" /> }
+                      label={ `${ coin.links?.homepage[0] }` } 
+                      component="a" 
+                      href={ `${ coin.links?.homepage[0] }` } 
+                      sx={{ marginLeft: 1 }}
+                    />
+                }
               </Grid>
 
               <Grid item xs={ 12 }>
@@ -212,7 +245,12 @@ export const CoinDetail = () => {
                     fontWeight: 'bold'
                   }}
                 >
-                  { 'total_supply' in coin.market_data && coin.market_data.total_supply.toLocaleString(undefined, { maximumFractionDigits:2 })  }
+                  { 'total_supply' in coin.market_data && 
+                    coin.market_data.total_supply ?
+                    coin.market_data.total_supply?.toLocaleString(undefined, { maximumFractionDigits:2 })  
+                    : `--`
+                  }
+
                 </Typography>
 
 
@@ -231,7 +269,11 @@ export const CoinDetail = () => {
                     fontWeight: 'bold'
                   }}
                 >
-                  { coin.market_data.max_supply.toLocaleString(undefined, { maximumFractionDigits:2 }) }
+                  { 
+                    coin.market_data.max_supply ?
+                    coin.market_data.max_supply?.toLocaleString(undefined, { maximumFractionDigits:2 }) 
+                    : `--`
+                  }
                 </Typography>
                 
               </Grid>
@@ -328,7 +370,11 @@ export const CoinDetail = () => {
                 <Typography
                   sx={{ fontWeight: 'bold' }}
                 >
-                  { coin.market_data.fully_diluted_valuation.usd.toLocaleString(undefined, { maximumFractionDigits:2 }) }
+                  { 
+                    coin.market_data.fully_diluted_valuation.usd ? 
+                    coin.market_data.fully_diluted_valuation.usd?.toLocaleString(undefined, { maximumFractionDigits:2 }) 
+                    : `--`
+                  }
                 </Typography>
               </Grid>
 
@@ -365,9 +411,12 @@ export const CoinDetail = () => {
               </Grid>
 
               <Grid item xs={ 12 }>
-                <Typography variant="h5">
-                  { consts.DETAIL.DESCRIPTION }
-                </Typography>
+                {
+                  coin.description && coin.description?.en.trim().length > 0 &&
+                    <Typography variant="h5">
+                      { consts.DETAIL.DESCRIPTION }
+                    </Typography>
+                }
                 <Typography>
                   { coin.description?.en }
                 </Typography>

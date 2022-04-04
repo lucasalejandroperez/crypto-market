@@ -29,25 +29,11 @@ export const SearchResults = () => {
         refetch();
     }, [searchDescription])
     
-    useLayoutEffect(() => {
-      
-        if (showSearch) {
-            console.log('mostrar');
-        }
-        else {
-            console.log('ocultar');
-            
-        }
-
-    }, [showSearch]);
-
     const handleCoinClick = async( coin:Coin ) => {
         
         navigate(`/coin/${ coin.id }`);
 
-        
         setShowSearch( false );
-        
         
     }
 
