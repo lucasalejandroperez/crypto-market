@@ -95,8 +95,9 @@ export const CoinDetail = () => {
         coin &&
           <Container maxWidth="xl">
             <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={ 0.5 }>
-              <Grid item xs={ 12 }>
-
+              
+              
+              <Grid item xs={ 12 } md={ 4 }>
                 {/* It must be a component */}
                 <Typography variant="h4" component="span" ml={ 1 }>
                   <img src={ coin.image?.thumb } alt="Logo" />
@@ -112,43 +113,73 @@ export const CoinDetail = () => {
                   sx={{ backgroundColor: grey[400] }} 
                   size="small"
                 />
-
-
               </Grid>
-              <Grid item xs={ 12 }>
 
-                {/* It must be a component */}
-                {
-                  coin.categories && coin.categories.length > 0 &&
-                  <Typography component="span" mr={ 1 }>
-                    {  consts.DETAIL.TAGS }:
+              {/* PRICE */}
+              {/* TODO: It must be a component */}
+              <Grid item xs={ 12 } md={ 8 }>
+                <Typography>
+                  { consts.DETAIL.PRICE_OF } { coin.name } ({ coin.symbol.toUpperCase() })
+                </Typography>
+                <Box
+                  sx={{ 
+                    display: 'flex',
+                    alignItems: 'center' 
+                  }}
+                >
+                  <Typography variant="h4" component="span" mr={ 1 }>
+                    { coin.market_data.current_price.usd.toLocaleString(undefined, { maximumFractionDigits: 6 }) }
                   </Typography>
-                }
-                {
-                  coin.categories.filter(category => category && category !== null).map( tag => (
-                    <Typography 
-                      mr={ 1 } 
-                      component="span" 
-                      key={ tag }
-                    >
-                      <Chip 
-                        label={ `${ tag }` } 
-                        size="small"
-                      />
-                    </Typography>
-                  ))
-                }
-
+                  <Chip 
+                    label={ `${ coin.market_data.price_change_percentage_24h.toLocaleString(undefined, { maximumFractionDigits:2 }) }%` } 
+                    sx={{ 
+                      backgroundColor: setPositiveNegativeClass(coin.market_data.price_change_percentage_24h),
+                      color: '#FFFFFF',
+                      fontWeight: 'bold'
+                    }}
+                  />
+                </Box>
+                <Typography 
+                  component="span"
+                >
+                  { consts.GENERAL.LOW }:
+                </Typography>
+                <Typography 
+                  component="span" 
+                  mr={ 2 }
+                  sx={{ 
+                    fontWeight: 'bold'
+                  }}
+                >
+                  { coin.market_data.low_24h.usd.toLocaleString(undefined, { maximumFractionDigits:2 }) }
+                </Typography>
+                <Typography 
+                  component="span"
+                >
+                  { consts.GENERAL.HIGH }:
+                </Typography>
+                <Typography 
+                  component="span"
+                  sx={{ 
+                    fontWeight: 'bold'
+                  }}
+                >
+                  { coin.market_data.high_24h.usd.toLocaleString(undefined, { maximumFractionDigits:2 }) }
+                </Typography>
               </Grid>
-              <Grid item xs={ 12 }>
+
+
+              {/* CONTRACTS */}
+              <Grid item xs={ 12 } md={ 6 }>
+
+                {/* CONTRACTS */}
+                {/* TODO: It must be a component */}
                 {
                   !isInvalidContract(coin.platforms) &&
                     <Typography component="div">
                       {  consts.DETAIL.CONTRACTS }:
                     </Typography>
                 }
-
-
                 {/* TODO: It must be a component */}
                 {
                   !isInvalidContract(coin.platforms) &&
@@ -178,9 +209,14 @@ export const CoinDetail = () => {
                     <SelectContract platforms={ coin.platforms } />
                 }
 
-              </Grid>
-              
-              <Grid item xs={ 12 }>
+
+                <Box
+                  sx={{ 
+                    marginTop: 1
+                  }}
+                >
+                {/* SITES */}
+                {/* TODO: IT must be a component */}
                 {
                   coin.links && coin.links.homepage && coin.links.homepage.length > 0 &&
                   <Typography component="span">
@@ -198,10 +234,91 @@ export const CoinDetail = () => {
                       sx={{ marginLeft: 1 }}
                     />
                 }
+                </Box>
+
+                <Box
+                  sx={{ 
+                    marginTop: 1
+                  }}
+                >
+                {/* CATEGORIES */}
+                {/* TODO: It must be a component */}
+                {
+                  coin.categories && coin.categories.length > 0 &&
+                  <Typography component="span" mr={ 1 }>
+                    {  consts.DETAIL.TAGS }:
+                  </Typography>
+                }
+                {
+                  coin.categories.filter(category => category && category !== null).map( tag => (
+                    <Typography 
+                      mr={ 1 } 
+                      component="span" 
+                      key={ tag }
+                    >
+                      <Chip 
+                        label={ `${ tag }` } 
+                        size="small"
+                      />
+                    </Typography>
+                  ))
+                }
+                </Box>
               </Grid>
 
-              <Grid item xs={ 12 }>
+              {/* MARKET CAP */}
+              {/* TODO: It must be a component */}
+              <Grid item xs={ 12 } md={ 2 }>
+                <Typography>
+                  { consts.DETAIL.MARKET_CAP }
+                  <Tooltip title={ consts.DETAIL.MARKET_CAP_TOOLTIP }>
+                    <InfoIcon 
+                      sx={{ color: grey[500] }} 
+                      fontSize="small"
+                    />
+                  </Tooltip>
+                </Typography>
+                <Typography
+                  sx={{ fontWeight: 'bold' }}
+                >
+                  { coin.market_data.market_cap.usd.toLocaleString(undefined, { maximumFractionDigits:2 }) }
+                </Typography>
+                <Typography
+                  sx={{ 
+                    color: setPositiveNegativeClass( coin.market_data.market_cap_change_24h ),
+                    fontWeight: 'bold'
+                  }}
+                >
+                  { coin.market_data.market_cap_change_percentage_24h.toLocaleString(undefined, { maximumFractionDigits:2 }) }%
+                </Typography>
+              </Grid>
 
+              {/* FULLY DILUTED MARKET CAP */}
+              {/* TODO: It must be a component */}
+              <Grid item xs={ 12 } md={ 2 }>
+                <Typography>
+                  { consts.DETAIL.FULLY_DILUTED_MARKET_CAP }
+                  <Tooltip title={ consts.DETAIL.FULLY_DILUTED_MARKET_CAP_TOOLTIP }>
+                    <InfoIcon 
+                      sx={{ color: grey[500] }} 
+                      fontSize="small"
+                    />
+                  </Tooltip>
+                </Typography>
+                <Typography
+                  sx={{ fontWeight: 'bold' }}
+                >
+                  { 
+                    coin.market_data.fully_diluted_valuation.usd ? 
+                    coin.market_data.fully_diluted_valuation.usd?.toLocaleString(undefined, { maximumFractionDigits:2 }) 
+                    : `--`
+                  }
+                </Typography>
+              </Grid>
+
+
+              <Grid item xs={ 12 } md={ 2 }>
+                {/* CIRCULATING SUPLY/TOTAL */}
                 {/* TODO: It must be a component */}
                 <Typography>
                   { consts.DETAIL.CIRCULATING_SUPPLY }
@@ -265,108 +382,12 @@ export const CoinDetail = () => {
                     : `--`
                   }
                 </Typography>
-                
               </Grid>
+              
+              
 
-                {/* TODO: It must be a component */}
-              <Grid item xs={ 12 }>
-                <Typography>
-                  { consts.DETAIL.PRICE_OF } { coin.name } ({ coin.symbol.toUpperCase() })
-                </Typography>
-                <Box
-                  sx={{ 
-                    display: 'flex',
-                    alignItems: 'center' 
-                  }}
-                >
-                  <Typography variant="h4" component="span" mr={ 1 }>
-                    { coin.market_data.current_price.usd.toLocaleString(undefined, { maximumFractionDigits: 6 }) }
-                  </Typography>
-                  <Chip 
-                    label={ `${ coin.market_data.price_change_percentage_24h.toLocaleString(undefined, { maximumFractionDigits:2 }) }%` } 
-                    sx={{ 
-                      backgroundColor: setPositiveNegativeClass(coin.market_data.price_change_percentage_24h),
-                      color: '#FFFFFF',
-                      fontWeight: 'bold'
-                    }}
-                  />
-                </Box>
-                <Typography 
-                  component="span"
-                >
-                  { consts.GENERAL.LOW }:
-                </Typography>
-                <Typography 
-                  component="span" 
-                  mr={ 2 }
-                  sx={{ 
-                    fontWeight: 'bold'
-                  }}
-                >
-                  { coin.market_data.low_24h.usd.toLocaleString(undefined, { maximumFractionDigits:2 }) }
-                </Typography>
-                <Typography 
-                  component="span"
-                >
-                  { consts.GENERAL.HIGH }:
-                </Typography>
-                <Typography 
-                  component="span"
-                  sx={{ 
-                    fontWeight: 'bold'
-                  }}
-                >
-                  { coin.market_data.high_24h.usd.toLocaleString(undefined, { maximumFractionDigits:2 }) }
-                </Typography>
-              </Grid>
+              
 
-              {/* It must be a component */}
-              <Grid item xs={ 12 }>
-                <Typography>
-                  { consts.DETAIL.MARKET_CAP }
-                  <Tooltip title={ consts.DETAIL.MARKET_CAP_TOOLTIP }>
-                    <InfoIcon 
-                      sx={{ color: grey[500] }} 
-                      fontSize="small"
-                    />
-                  </Tooltip>
-                </Typography>
-                <Typography
-                  sx={{ fontWeight: 'bold' }}
-                >
-                  { coin.market_data.market_cap.usd.toLocaleString(undefined, { maximumFractionDigits:2 }) }
-                </Typography>
-                <Typography
-                  sx={{ 
-                    color: setPositiveNegativeClass( coin.market_data.market_cap_change_24h ),
-                    fontWeight: 'bold'
-                  }}
-                >
-                  { coin.market_data.market_cap_change_percentage_24h.toLocaleString(undefined, { maximumFractionDigits:2 }) }%
-                </Typography>
-              </Grid>
-
-              {/* It must be a component */}
-              <Grid item xs={ 12 }>
-                <Typography>
-                  { consts.DETAIL.FULLY_DILUTED_MARKET_CAP }
-                  <Tooltip title={ consts.DETAIL.FULLY_DILUTED_MARKET_CAP_TOOLTIP }>
-                    <InfoIcon 
-                      sx={{ color: grey[500] }} 
-                      fontSize="small"
-                    />
-                  </Tooltip>
-                </Typography>
-                <Typography
-                  sx={{ fontWeight: 'bold' }}
-                >
-                  { 
-                    coin.market_data.fully_diluted_valuation.usd ? 
-                    coin.market_data.fully_diluted_valuation.usd?.toLocaleString(undefined, { maximumFractionDigits:2 }) 
-                    : `--`
-                  }
-                </Typography>
-              </Grid>
 
               <Grid item xs={ 12 }>
                 <Typography>
@@ -401,6 +422,12 @@ export const CoinDetail = () => {
               </Grid>
 
               <Grid item xs={ 12 }>
+                <Container
+                  sx={{ 
+                    borderTop: '1px solid #2196f3',
+                    paddingTop: 2
+                  }}
+                >
                 {
                   coin.description && coin.description?.en.trim().length > 0 &&
                     <Typography variant="h5">
@@ -408,6 +435,8 @@ export const CoinDetail = () => {
                     </Typography>
                 }
                 <RenderHTMLComponent html={ coin.description?.en } />
+
+                </Container>
               </Grid>
             </Grid>
           </Container>
