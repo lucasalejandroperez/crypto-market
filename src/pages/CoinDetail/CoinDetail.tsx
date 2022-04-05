@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { Box, Chip, Container, Grid, LinearProgress, Tooltip, Typography } from "@mui/material";
+import { Box, Chip, Container, Grid, Tooltip, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import InfoIcon from '@mui/icons-material/Info';
 
@@ -14,6 +14,7 @@ import { getArrayContracts, IContractPlatformType, shortenContract, getPercentag
 import { SelectContract } from "../../components/SelectContract/SelectContract";
 import { format } from 'date-fns';
 import LinearWithValueLabel from "../../components/LinearProgressWithLabel/LinearWithValueLabel";
+import { setPositiveNegativeClass } from "../../utilities/numbers";
 
 export const Prueba = () => {
   return <div dangerouslySetInnerHTML={{__html: `<b>lolal</b>`}}></div>
@@ -71,24 +72,7 @@ export const CoinDetail = () => {
 
   }
 
-  // TODO: Move to utils
-  const setPositiveNegativeClass = ( amount:number ):string => {
-
-    const symbolNumber = Math.sign( amount );
-
-    if ( symbolNumber === 1 ) {
-        return '#00c853';
-    }
-    else if ( symbolNumber === -1 ) {
-        return '#ff5252';
-    }
-    else {
-        return '#000000';
-    }
-
-};
-
-
+  
 
   return (
     <>

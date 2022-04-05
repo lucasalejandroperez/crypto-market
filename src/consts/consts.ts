@@ -18,6 +18,13 @@ export const consts = {
         NONE: 'None.',
         ATH: 'ATH'
     },
+    MARKET_CAP_LIST: {
+        NAME: 'Name',
+        PRICE: 'Price',
+        MARKET_CAP: 'Market cap',
+        CIRCULATING_SUPPLY: 'Circulating Supply',
+        ATH: 'ATH'
+    },
     COMPONENTS: {
         COPY_TO_CLIPBOARD: 'Copy to clipboard',
         COPY_TO_CLIPBOARD_SUCCESSFULL: 'Copied to clipboard!'

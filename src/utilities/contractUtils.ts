@@ -27,8 +27,6 @@ export const shortenContract = ( value:any ):string => {
 
   const contract:string = value;
 
-  console.log(contract);
-  
   let shortContract = '';
 
   if (contract.trim().length > 13) {
@@ -36,8 +34,6 @@ export const shortenContract = ( value:any ):string => {
     shortContract = shortContract + '...';
     shortContract = shortContract + contract.trim().slice(-7);
   }
-  console.log(shortContract);
-  
   
   return shortContract;
 }
