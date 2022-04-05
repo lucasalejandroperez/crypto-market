@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { Box, Chip, Container, Grid, LinearProgress, Tooltip, Typography } from "@mui/material";
-import { grey, red } from "@mui/material/colors";
+import { Box, Chip, Container, Grid, Tooltip, Typography } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import InfoIcon from '@mui/icons-material/Info';
 
 import CoinGecko from '../../api/coinGeckoApi';
 import { ICoin } from "../../models/coinInterfaces";
 import { CopyToClipboard } from "../../components/CopyToClipboard/CopyToClipboard";
 import { consts } from '../../consts/consts';
+import { RenderHTMLComponent } from '../../components/RenderHTMLComponent/RenderHTMLComponent';
+import { getArrayContracts, IContractPlatformType } from "../../utilities/getArrayContracts";
+import { SelectContract } from "../../components/SelectContract/SelectContract";
+
+export const Prueba = () => {
+  return <div dangerouslySetInnerHTML={{__html: `<b>lolal</b>`}}></div>
+}
 
 export const CoinDetail = () => {
 
@@ -44,32 +51,6 @@ export const CoinDetail = () => {
     }
 
   }, [params.coinId])
-
-  interface IContractPlatformType {
-    key: string;
-    valor: unknown;
-  }
-
-
-  // TODO: Move to another place, in the same component of contracts maybe?
-  const getContracts = ( contracts:any ): IContractPlatformType[] => {
-    let contractList:IContractPlatformType[] = [];
-
-    for (const [key, value] of Object.entries(contracts)) {
-      
-      const newContract: IContractPlatformType = {
-        key,
-        valor: value
-      };
-
-      if (newContract.key.trim() !== '' && newContract.valor !== '') {
-        contractList.push(newContract);
-      }
-
-    }
-
-    return contractList;
-  }
 
   const isInvalidContract = ( contracts:any ): boolean => {
 
@@ -159,18 +140,19 @@ export const CoinDetail = () => {
 
               </Grid>
               <Grid item xs={ 12 }>
-                
                 {
                   !isInvalidContract(coin.platforms) &&
-                    <Typography component="span">
-                      {  consts.DETAIL.CONTRACTS }
+                    <Typography component="div">
+                      {  consts.DETAIL.CONTRACTS }:
                     </Typography>
                 }
 
+
                 {/* TODO: It must be a component */}
                 {
-                  getContracts(coin.platforms).map( ( platform:IContractPlatformType ) => (
-                    <div
+                  !isInvalidContract(coin.platforms) &&
+                  getArrayContracts(coin.platforms).slice(0, 1).map( ( platform:IContractPlatformType ) => (
+                    <span
                       key={ platform.key }
                     >
                       <Chip 
@@ -179,17 +161,21 @@ export const CoinDetail = () => {
                           flexDirection: 'row-reverse',
                           paddingLeft: 0.5,
                           paddingRight: 2,
+                          marginRight: 1
                         }}
                         icon={ 
                           <CopyToClipboard text={ `${ platform.valor }` } />
                         }
                         label={ `${ platform.key }: ${ platform.valor }` }
                       />
-                    </div>
+
+                    </span>
                   ))
                 }
-              </Grid>
+                <SelectContract platforms={ coin.platforms } />
 
+              </Grid>
+              
               <Grid item xs={ 12 }>
                 {
                   coin.links && coin.links.homepage && coin.links.homepage.length > 0 &&
@@ -417,9 +403,7 @@ export const CoinDetail = () => {
                       { consts.DETAIL.DESCRIPTION }
                     </Typography>
                 }
-                <Typography>
-                  { coin.description?.en }
-                </Typography>
+                <RenderHTMLComponent html={ coin.description?.en } />
               </Grid>
             </Grid>
           </Container>
