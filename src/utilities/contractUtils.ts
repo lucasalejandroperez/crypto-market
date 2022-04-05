@@ -41,3 +41,7 @@ export const shortenContract = ( value:any ):string => {
   
   return shortContract;
 }
+
+export const getPercentageCirculatingSupply = ( circulatingSupply:number, maxSupply:number):number => {
+    return Math.ceil((( circulatingSupply * 100 ) / maxSupply));
+}

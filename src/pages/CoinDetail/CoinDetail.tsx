@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { Box, Chip, Container, Grid, Tooltip, Typography } from "@mui/material";
+import { Box, Chip, Container, Grid, LinearProgress, Tooltip, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import InfoIcon from '@mui/icons-material/Info';
 
@@ -10,9 +10,10 @@ import { ICoin } from "../../models/coinInterfaces";
 import { CopyToClipboard } from "../../components/CopyToClipboard/CopyToClipboard";
 import { consts } from '../../consts/consts';
 import { RenderHTMLComponent } from '../../components/RenderHTMLComponent/RenderHTMLComponent';
-import { getArrayContracts, IContractPlatformType, shortenContract } from "../../utilities/contractUtils";
+import { getArrayContracts, IContractPlatformType, shortenContract, getPercentageCirculatingSupply } from '../../utilities/contractUtils';
 import { SelectContract } from "../../components/SelectContract/SelectContract";
 import { format } from 'date-fns';
+import LinearWithValueLabel from "../../components/LinearProgressWithLabel/LinearWithValueLabel";
 
 export const Prueba = () => {
   return <div dangerouslySetInnerHTML={{__html: `<b>lolal</b>`}}></div>
@@ -359,6 +360,16 @@ export const CoinDetail = () => {
                   >
                     { coin.market_data.circulating_supply.toLocaleString(undefined, { maximumFractionDigits:2 }) }
                   </Typography>
+                  
+                  {
+                    coin.market_data.circulating_supply && coin.market_data.max_supply &&
+                      <Box sx={{
+                        width: '100%'
+                      }}>
+                        <LinearWithValueLabel value={ getPercentageCirculatingSupply(coin.market_data.circulating_supply, coin.market_data.max_supply) } />
+                      </Box>
+                  }
+
                 </Box>
 
                 <Box
