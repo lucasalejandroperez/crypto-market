@@ -151,8 +151,6 @@ export const MarketCapList = () => {
                         </Box>
                     </Grid>
                 </Box>
-                
-
                 {
                     marketCap &&
                     marketCap.map( (coin: ICoinGeckoInterfaces) => (
@@ -163,7 +161,8 @@ export const MarketCapList = () => {
                             sx={{
                                 borderTop: '1px solid #eff2f5',
                                 paddingTop: 2,
-                                paddingBottom: 2
+                                paddingBottom: 2,
+                                minHeight: '80px'
                             }}
                         >
                             <Grid container>
