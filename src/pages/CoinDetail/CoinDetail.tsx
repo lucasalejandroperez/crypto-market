@@ -158,7 +158,6 @@ export const CoinDetail = () => {
                     >
                       <Chip 
                         sx={{ 
-                          
                           flexDirection: 'row-reverse',
                           paddingLeft: 0.5,
                           paddingRight: 2,
@@ -174,6 +173,7 @@ export const CoinDetail = () => {
                   ))
                 }
                 {
+                  // TODO: To show this, It must be more than 1
                   !isInvalidContract(coin.platforms) &&
                     <SelectContract platforms={ coin.platforms } />
                 }
@@ -280,7 +280,7 @@ export const CoinDetail = () => {
                   }}
                 >
                   <Typography variant="h4" component="span" mr={ 1 }>
-                    { coin.market_data.current_price.usd.toLocaleString(undefined, { maximumFractionDigits:2 }) }
+                    { coin.market_data.current_price.usd.toLocaleString(undefined, { maximumFractionDigits: 6 }) }
                   </Typography>
                   <Chip 
                     label={ `${ coin.market_data.price_change_percentage_24h.toLocaleString(undefined, { maximumFractionDigits:2 }) }%` } 
@@ -389,7 +389,6 @@ export const CoinDetail = () => {
                 </Typography>
                 <Typography component="span">
                   ({ format(new Date(coin.market_data.ath_date.usd), 'dd/MM/yyyy HH:mm') })
-                  {/* (<Moment date={ coin.market_data.ath_date.usd } />) */}
                 </Typography>
                 <Typography
                   sx={{
