@@ -56,10 +56,13 @@ export const MarketCapList = () => {
   return (
     <div>
         <Box>
-            <Typography sx={{
+            <Typography 
+                sx={{
                 display: 'flex',
                 justifyContent: 'center'
-            }}>
+                }}
+                mb={ 1 }
+            >
                 { consts.HOME.SUBTITLE }
             </Typography>
         </Box>
@@ -80,6 +83,8 @@ export const MarketCapList = () => {
                         <Box component={ Grid } item xs={ 1 } sm={ 1 } md={ 1 } lg={ 1 } display={{ xs: 'block' }}>
                             <Typography
                                 sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
                                     fontWeight: 500
                                 }}
                             >
@@ -162,12 +167,22 @@ export const MarketCapList = () => {
                                 borderTop: '1px solid #eff2f5',
                                 paddingTop: 2,
                                 paddingBottom: 2,
-                                minHeight: '80px'
+                                minHeight: '80px',
+                                "&:hover": {
+                                    backgroundColor: '#eff4f7'
+                                }
                             }}
                         >
                             <Grid container>
                                 <Box component={ Grid } item xs={ 1 } sm={ 1 } md={ 1 } lg={ 1 } display={{ xs: 'block' }}>
-                                    { coin.market_cap_rank }
+                                    <Typography
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'center'
+                                        }}
+                                    >
+                                        { coin.market_cap_rank }
+                                    </Typography>
                                 </Box>
                                 <Box component={ Grid } item xs={ 5 } sm={ 5 } md={ 3 } lg={ 2 } display={{ xs: 'block' }} >
                                     {/* TODO: It must be a component */}
