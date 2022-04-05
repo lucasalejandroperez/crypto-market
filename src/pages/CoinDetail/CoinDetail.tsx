@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { format } from 'date-fns';
 
 import { Box, Chip, Container, Grid, Tooltip, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
@@ -12,13 +13,8 @@ import { consts } from '../../consts/consts';
 import { RenderHTMLComponent } from '../../components/RenderHTMLComponent/RenderHTMLComponent';
 import { getArrayContracts, IContractPlatformType, shortenContract, getPercentageCirculatingSupply } from '../../utilities/contractUtils';
 import { SelectContract } from "../../components/SelectContract/SelectContract";
-import { format } from 'date-fns';
 import LinearWithValueLabel from "../../components/LinearProgressWithLabel/LinearWithValueLabel";
 import { setPositiveNegativeClass } from "../../utilities/numbers";
-
-export const Prueba = () => {
-  return <div dangerouslySetInnerHTML={{__html: `<b>lolal</b>`}}></div>
-}
 
 export const CoinDetail = () => {
 
@@ -69,10 +65,8 @@ export const CoinDetail = () => {
     }
 
     return isInvalid;
-
   }
 
-  
 
   return (
     <>

@@ -5,10 +5,16 @@ import { CustomButtonLink } from "../CustomButtonLink/CustomButtonLink";
 import { consts } from '../../consts/consts';
 import pages from '../../mock/pages.json';
 import { IconNavBar } from "./IconNavBar";
-import { ChangeEvent } from "react";
 import { SearchBar } from "../SearchBar/SearchBar";
+import { useNavigate } from 'react-router-dom';
 
 export const NavBar = () => {
+
+    const navigate = useNavigate();
+
+    const handleTitleOnClick = () => {
+        navigate('/');
+    }
 
     return (
         <AppBar position="static" color="primary">
@@ -16,7 +22,11 @@ export const NavBar = () => {
                 <IconNavBar />
                 <Typography 
                     variant="h6"
-                    sx={{ flexGrow: 1 }}
+                    sx={{ 
+                        flexGrow: 1,
+                        cursor: 'pointer'
+                    }}
+                    onClick={ handleTitleOnClick }
                 >
                 { consts.GENERAL.TITLE.toUpperCase() }
                 </Typography>
