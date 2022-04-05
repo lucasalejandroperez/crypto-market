@@ -1,5 +1,5 @@
-import { Box, MenuItem, Select, Typography } from "@mui/material";
-import { getArrayContracts } from "../../utilities/getArrayContracts";
+import { MenuItem, Select, Typography } from "@mui/material";
+import { getArrayContracts } from "../../utilities/contractUtils";
 import { CopyToClipboard } from '../CopyToClipboard/CopyToClipboard';
 
 interface IContractPlatformType {

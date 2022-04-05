@@ -10,7 +10,7 @@ import { ICoin } from "../../models/coinInterfaces";
 import { CopyToClipboard } from "../../components/CopyToClipboard/CopyToClipboard";
 import { consts } from '../../consts/consts';
 import { RenderHTMLComponent } from '../../components/RenderHTMLComponent/RenderHTMLComponent';
-import { getArrayContracts, IContractPlatformType } from "../../utilities/getArrayContracts";
+import { getArrayContracts, IContractPlatformType, shortenContract } from "../../utilities/contractUtils";
 import { SelectContract } from "../../components/SelectContract/SelectContract";
 import { format } from 'date-fns';
 
@@ -87,7 +87,7 @@ export const CoinDetail = () => {
 
 };
 
-  
+
 
   return (
     <>
@@ -205,7 +205,7 @@ export const CoinDetail = () => {
                         icon={ 
                           <CopyToClipboard text={ `${ platform.valor }` } />
                         }
-                        label={ `${ platform.key }: ${ platform.valor }` }
+                        label={ `${ platform.key }: ${ shortenContract(platform.valor) }` }
                       />
 
                     </span>

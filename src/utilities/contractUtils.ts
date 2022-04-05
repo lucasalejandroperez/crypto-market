@@ -22,3 +22,22 @@ export const getArrayContracts = ( contracts:any ): IContractPlatformType[] => {
 
     return contractList;
   }
+
+export const shortenContract = ( value:any ):string => {
+
+  const contract:string = value;
+
+  console.log(contract);
+  
+  let shortContract = '';
+
+  if (contract.trim().length > 13) {
+    shortContract = contract.trim().slice(0, 6);
+    shortContract = shortContract + '...';
+    shortContract = shortContract + contract.trim().slice(-7);
+  }
+  console.log(shortContract);
+  
+  
+  return shortContract;
+}
