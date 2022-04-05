@@ -12,6 +12,7 @@ import { consts } from '../../consts/consts';
 import { RenderHTMLComponent } from '../../components/RenderHTMLComponent/RenderHTMLComponent';
 import { getArrayContracts, IContractPlatformType } from "../../utilities/getArrayContracts";
 import { SelectContract } from "../../components/SelectContract/SelectContract";
+import { format } from 'date-fns';
 
 export const Prueba = () => {
   return <div dangerouslySetInnerHTML={{__html: `<b>lolal</b>`}}></div>
@@ -93,7 +94,7 @@ export const CoinDetail = () => {
       {
         coin &&
           <Container maxWidth="xl">
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={ 0.5 }>
               <Grid item xs={ 12 }>
 
                 {/* It must be a component */}
@@ -172,7 +173,10 @@ export const CoinDetail = () => {
                     </span>
                   ))
                 }
-                <SelectContract platforms={ coin.platforms } />
+                {
+                  !isInvalidContract(coin.platforms) &&
+                    <SelectContract platforms={ coin.platforms } />
+                }
 
               </Grid>
               
@@ -384,7 +388,8 @@ export const CoinDetail = () => {
                   { coin.market_data.ath.usd.toLocaleString(undefined, { maximumFractionDigits:2 }) }
                 </Typography>
                 <Typography component="span">
-                  ({ coin.market_data.ath_date.usd })
+                  ({ format(new Date(coin.market_data.ath_date.usd), 'dd/MM/yyyy HH:mm') })
+                  {/* (<Moment date={ coin.market_data.ath_date.usd } />) */}
                 </Typography>
                 <Typography
                   sx={{
