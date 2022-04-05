@@ -12,6 +12,7 @@ import { grey } from "@mui/material/colors";
 import LinearWithValueLabel from "../../components/LinearProgressWithLabel/LinearWithValueLabel";
 import { getPercentageCirculatingSupply } from "../../utilities/contractUtils";
 import { useNavigate } from "react-router-dom";
+import { CirculatingSupply } from "../../components/CirculatingSupply/CirculatingSupply";
 
 export const MarketCapList = () => {
 
@@ -252,7 +253,14 @@ export const MarketCapList = () => {
                                 </Box>
                                 <Box component={ Grid } item                   md={ 2 } lg={ 2 } display={{ xs: 'none', sm: 'none', md: "block" }}>
                                     {/* TODO: It must be a component */}
-                                    <Typography>
+                                    
+                                            <CirculatingSupply 
+                                                circulating_supply={ coin.circulating_supply } 
+                                                max_supply={ coin.max_supply }
+                                                symbol={ coin.symbol }
+                                            />
+
+                                    {/* <Typography>
                                         { coin.circulating_supply.toLocaleString(undefined, { maximumFractionDigits:2 }) } { coin.symbol.toUpperCase() }
                                     </Typography>
                                     {
@@ -262,7 +270,7 @@ export const MarketCapList = () => {
                                             }}>
                                                 <LinearWithValueLabel value={ getPercentageCirculatingSupply(coin.circulating_supply, coin.max_supply) } />
                                             </Box>
-                                    }
+                                    } */}
                                 </Box>
                                 <Box component={ Grid } item                            lg={ 1 } display={{ xs: 'none', sm: 'none', md: "none", lg: "block" }}>
                                     <Typography>

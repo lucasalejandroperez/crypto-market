@@ -23,6 +23,8 @@ export const consts = {
         PRICE: 'Price',
         MARKET_CAP: 'Market cap',
         CIRCULATING_SUPPLY: 'Circulating Supply',
+        MAX_SUPPLY: 'Max supply',
+        TOTAL_SUPPLY: 'Total supply',
         ATH: 'ATH'
     },
     COMPONENTS: {
