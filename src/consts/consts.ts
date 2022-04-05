@@ -49,5 +49,10 @@ export const consts = {
         FULLY_DILUTED_MARKET_CAP: 'Fully Diluted Market Cap',
         FULLY_DILUTED_MARKET_CAP_TOOLTIP: 'The market cap if the max supply was in circulation. Fully-diluted market cap (FDMC) = price x max supply. If max supply is null, FDMC = price x total supply. if max supply and total supply are infinite or not available, fully-diluted market cap shows.',
         ATH_TOOLTIP: 'Stands for "all-time high." In cryptocurrency and online trading, the ATH is the highest price or market capitalization that a particular asset has reached in its entire history, since its listing.'
+    },
+    ABOUT: {
+        CREATED_BY: 'Created by',
+        SOFTWARE_DEVELOPER: 'Software developer for more than 15 years',
+        YOU_CAN_FIND_ME: 'You can find me on Twitter'
     }
 }
