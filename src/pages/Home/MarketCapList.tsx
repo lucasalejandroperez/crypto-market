@@ -9,10 +9,14 @@ import { ICoinGeckoInterfaces } from "../../models/coinGeckoInterfaces";
 import { MarketCapItem } from "./MarketCapItem";
 import { setPositiveNegativeClass } from '../../utilities/numbers';
 import { grey } from "@mui/material/colors";
+import LinearWithValueLabel from "../../components/LinearProgressWithLabel/LinearWithValueLabel";
+import { getPercentageCirculatingSupply } from "../../utilities/contractUtils";
+import { useNavigate } from "react-router-dom";
 
 export const MarketCapList = () => {
 
     const { orderBy } = useContext(MarketCapContext);
+    const navigate = useNavigate();
 
     const {
         data: marketCap, 
@@ -28,7 +32,11 @@ export const MarketCapList = () => {
   
     useEffect(() => {
         refetch();
-    }, [orderBy])
+    }, [orderBy]);
+
+    const handleCoinDetailOnClick = ( id:string ) => {
+        navigate(`coin/${ id }`);
+    }
   
 
     if ( isLoading ) {
@@ -69,7 +77,6 @@ export const MarketCapList = () => {
                     }}
                 >
                     <Grid container>
-
                         <Box component={ Grid } item xs={ 1 } sm={ 1 } md={ 1 } lg={ 1 } display={{ xs: 'block' }}>
                             <Typography
                                 sx={{
@@ -142,8 +149,6 @@ export const MarketCapList = () => {
                                 { consts.MARKET_CAP_LIST.ATH }
                             </Typography>
                         </Box>
-                    
-
                     </Grid>
                 </Box>
                 
@@ -162,19 +167,33 @@ export const MarketCapList = () => {
                             }}
                         >
                             <Grid container>
-
                                 <Box component={ Grid } item xs={ 1 } sm={ 1 } md={ 1 } lg={ 1 } display={{ xs: 'block' }}>
                                     { coin.market_cap_rank }
                                 </Box>
-                                <Box component={ Grid } item xs={ 5 } sm={ 5 } md={ 3 } lg={ 2 } display={{ xs: 'block' }}>
+                                <Box component={ Grid } item xs={ 5 } sm={ 5 } md={ 3 } lg={ 2 } display={{ xs: 'block' }} >
                                     {/* TODO: It must be a component */}
-                                    <img src={ coin.image } alt="logo"width="25" height="25" />
-                                    <Typography component="span" ml={ 1 }>
+                                    <Box
+                                        component="span"
+                                        sx={{
+                                            cursor: 'pointer'
+                                        }}
+                                        onClick={ () => handleCoinDetailOnClick( coin.id ) }
+                                    >
+                                        <img src={ coin.image } alt="logo"width="25" height="25" />
+                                    </Box>
+                                    <Typography 
+                                        component="span" 
+                                        ml={ 1 }
+                                        sx={{
+                                            cursor: 'pointer'
+                                        }}
+                                        onClick={ () => handleCoinDetailOnClick( coin.id ) }
+                                    >
                                         <Typography
                                             component="span"
                                             mr={ 1 }
                                             sx={{
-                                                fontWeight: 'bold',
+                                                fontWeight: 'bold'
                                             }}
                                         >
                                             { coin.name } 
@@ -222,19 +241,22 @@ export const MarketCapList = () => {
                                     <Typography>
                                         { coin.circulating_supply.toLocaleString(undefined, { maximumFractionDigits:2 }) } { coin.symbol.toUpperCase() }
                                     </Typography>
+                                    {
+                                        coin.circulating_supply && coin.max_supply &&
+                                            <Box sx={{
+                                                width: '90%'
+                                            }}>
+                                                <LinearWithValueLabel value={ getPercentageCirculatingSupply(coin.circulating_supply, coin.max_supply) } />
+                                            </Box>
+                                    }
                                 </Box>
                                 <Box component={ Grid } item                            lg={ 1 } display={{ xs: 'none', sm: 'none', md: "none", lg: "block" }}>
                                     <Typography>
                                         ${ coin.ath.toLocaleString(undefined, { maximumFractionDigits:2 }) }
                                     </Typography>
                                 </Box>
-
-
-
                             </Grid>
-
                         </Box>
-
                     )) 
                 }
             </Grid>

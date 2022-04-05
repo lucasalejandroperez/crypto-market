@@ -160,7 +160,7 @@ export const CoinDetail = () => {
                 xs={ 12 } 
                 md={ 6 } 
                 sx={{
-                borderTop: '1px solid grey',
+                borderTop: '1px solid #c8c8c8',
                 marginTop: 1
                 }}
               >
@@ -262,7 +262,7 @@ export const CoinDetail = () => {
               {/* MARKET CAP */}
               {/* TODO: It must be a component */}
               <Grid item xs={ 12 } md={ 2 } sx={{
-                border: '1px solid grey',
+                border: '1px solid #c8c8c8',
                 marginTop: 1,
                 marginBottom: 1
               }}>
@@ -293,7 +293,7 @@ export const CoinDetail = () => {
               {/* FULLY DILUTED MARKET CAP */}
               {/* TODO: It must be a component */}
               <Grid item xs={ 12 } md={ 2 } sx={{
-                border: '1px solid grey',
+                border: '1px solid #c8c8c8',
                 marginTop: 1,
                 marginBottom: 1
               }}>
@@ -319,7 +319,7 @@ export const CoinDetail = () => {
 
 
               <Grid item xs={ 12 } md={ 2 } sx={{
-                border: '1px solid grey',
+                border: '1px solid #c8c8c8',
                 marginTop: 1,
                 marginBottom: 1
               }}>
