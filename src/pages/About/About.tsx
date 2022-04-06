@@ -19,9 +19,6 @@ export const About = () => {
                   <img src="../assets/images/italy-flag.png" width="50" height="30" alt="" />
                 </span>
             </p>
-            <p>
-                <strong>Blockchain lover</strong>
-            </p>
             <div className="mt-2">
                 <span className="mr-1">
                     { consts.ABOUT.YOU_CAN_FIND_ME }: 
