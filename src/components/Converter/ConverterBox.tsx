@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+//import { useEffect, useState } from 'react';
 
 // TODO: Move to helper
 export const converterCoinHelper = ( amount:number, left_current_price:number, right_current_price:number ) => {
@@ -6,6 +6,7 @@ export const converterCoinHelper = ( amount:number, left_current_price:number, r
     return ( amount * left_current_price ) / right_current_price;
 }
 
+// test
 
 // export const ConverterBox = () => {
 
