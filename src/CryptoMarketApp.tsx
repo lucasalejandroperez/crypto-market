@@ -1,7 +1,6 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import { blue, grey } from "@mui/material/colors";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { isWhiteSpaceLike } from "typescript";
 import { MarketCapProvider } from "./context/marketCap/MarketCapProvider";
 import { AppRouter } from "./routes/AppRouter";
 

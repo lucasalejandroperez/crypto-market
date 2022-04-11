@@ -1,0 +1,36 @@
+.converter-results {
+    position: absolute;
+    z-index: 9999;
+    height: 200px;
+}
+
+.converter-items {
+    max-height: 50vh;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,.125);
+    margin-right: 20px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.converter-results ::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.converter-results ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+    background-color: lightgray;
+}
+
+/* Handle */
+.converter-results ::-webkit-scrollbar-thumb {
+    background: #2196f3; 
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.converter-results ::-webkit-scrollbar-thumb:hover {
+    background: var(--blue)
+}

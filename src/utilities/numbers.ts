@@ -13,3 +13,4 @@ export const setPositiveNegativeClass = ( amount:number ):string => {
     }
 
 };
+

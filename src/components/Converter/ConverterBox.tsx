@@ -1,157 +1,354 @@
-//import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import coinGeckoApi from '../../api/coinGeckoApi';
+import { Coin, ISearchCoinInterfaces } from '../../models/searchCoinInterfaces';
 
-// TODO: Move to helper
-export const converterCoinHelper = ( amount:number, left_current_price:number, right_current_price:number ) => {
+import './ConverterBox.css';
+import { isEmpty } from '../../utilities/jsValidations';
+import { NumberFormatCustom } from '../NumberFormatCustom/NumberFormatCustom';
+import { converterCoinHelper } from '../../utilities/coinHelper';
 
-    return ( amount * left_current_price ) / right_current_price;
-}
 
 // test
 
-// export const ConverterBox = () => {
+export const ConverterBox = () => {
+    
+    const [amountToConvert, setAmountToConvert] = useState<string>('1');
+    const [leftCoinSearchItems, setLeftCoinSearchItems] = useState<ISearchCoinInterfaces>();
+    const [rightCoinSearchItems, setRightCoinSearchItems] = useState<ISearchCoinInterfaces>();
+    const [showLeftSearch, setShowLeftSearch] = useState(false);
+    const [showRightSearch, setShowRightSearch] = useState(false);
+    const [selectedLeftCoin, setSelectedLeftCoin] = useState<Coin | null>(null);
+    const [selectedLeftCurrentPrice, setSelectedLeftCurrentPrice] = useState<number>();
+    const [selectedRightCurrentPrice, setSelectedRightCurrentPrice] = useState<number>();
+    const [selectedRightCoin, setSelectedRightCoin] = useState<Coin | null>(null);
+    const [leftCoinDescription, setLeftCoinDescription] = useState('');
+    const [rightCoinDescription, setRightCoinDescription] = useState('');
+    const debouncedRef = useRef<NodeJS.Timeout>();
+    const debouncedRightRef = useRef<NodeJS.Timeout>();
 
-//     const [leftOption, setLeftOption] = useState({ value : 0 });
-//     const [rightOption, setRightOption] = useState({ value : 0 });
+    useEffect(() => {
+       // TODO: load btc -> 1 tether o usd
+    }, []);
+    
+    const handleOnChangeAmountToConvert = (event: ChangeEvent<HTMLInputElement>) => {
+        setAmountToConvert(event.target.value);
+    }
 
-//     const [leftCoin, setLeftCoin] = useState( data[0] );
-//     const [rightCoin, setRightCoin] = useState( data[1] );
+    const handleOnChangeLeftCoin = (event: ChangeEvent<HTMLInputElement>) => {
+        const description = event.target.value;
+        setLeftCoinDescription(description);
 
-//     useEffect(() => {
+        if (description.length < 2) {
+            setShowLeftSearch( false );
+            return;
+        }
+
+        setShowLeftSearch( true );
+
+        if ( debouncedRef.current ) {
+            clearTimeout( debouncedRef.current );
+        }
+
+        debouncedRef.current = setTimeout(async() => {
+            //setSearchDescription( event.target.value );
+            // TODO: must add try/catch to manage errors
+            const items = await coinGeckoApi.CoinGecko.searchCoins(description);
+            setLeftCoinSearchItems(items);
+
+        }, 1000 );
+    }
+
+    const handleOnBlurLeftCoin = () => {
+        setTimeout(() => {
+            setShowLeftSearch(false);
+        }, 500);
+    }
+
+    const handleOnClickLeftCoin = async( coin:Coin ) => {
+        setSelectedLeftCoin(coin);
+        setLeftCoinDescription(`${ coin.name } (${coin.symbol.toUpperCase()})`);
+
+        const coinMarketData = await coinGeckoApi.CoinGecko.getCoin(coin.name.toLowerCase());
+        console.log('market data: ', coinMarketData);
         
-//         const value = { 
-//             target: { 
-//                 value: 1
-//             }
-//         };
-        
-//         handleLeftInputChange( value );
 
-//     }, []);
+        if (coinMarketData && coinMarketData.market_data && coinMarketData.market_data.current_price) {
+            setSelectedLeftCurrentPrice(coinMarketData.market_data.current_price.usd);
+        }
+    }
 
-//     const updateRightOption = ( value ) => {
+    const handleOnChangeRightCoin = (event: ChangeEvent<HTMLInputElement>) => {
+        const description = event.target.value;
+        setRightCoinDescription(description);
 
-//         const valueConverted = converterCoinHelper( value, leftCoin.current_price, rightCoin.current_price );
-        
-//         setRightOption( { value: valueConverted } );
+        if (description.length < 2) {
+            setShowRightSearch( false );
+            return;
+        }
 
-//     };
+        setShowRightSearch( true );
 
-//     const handleLeftInputChange = ( e ) => {
+        if ( debouncedRightRef.current ) {
+            clearTimeout( debouncedRightRef.current );
+        }
 
-//         setLeftOption( { value: e.target.value } );
-        
-//         updateRightOption( e.target.value );
+        debouncedRightRef.current = setTimeout(async() => {
+            //setSearchDescription( event.target.value );
+            // TODO: must add try/catch to manage errors
+            const items = await coinGeckoApi.CoinGecko.searchCoins(description);
+            setRightCoinSearchItems(items);
 
-//     };
+        }, 1000 );
+    }
 
-//     const handleRightInputChange = ( e ) => {
-        
-//         setRightOption( { value: e.target.value } )
+    const handleOnBlurRightCoin = () => {
+        setTimeout(() => {
+            setShowRightSearch(false);
+        }, 500);
+    }
 
-//         const valueConverted = converterCoinHelper( e.target.value, rightCoin.current_price, leftCoin.current_price );
-        
-//         setLeftOption( { value: valueConverted } );
-//     };
+    const handleOnClickRightCoin = async( coin:Coin ) => {
+        setSelectedRightCoin(coin);
+        setRightCoinDescription(`${ coin.name } (${coin.symbol.toUpperCase()})`);
 
-//     const handleLeftSelectChange = ( e ) => {
-        
-//         const selectedLeftCoin = data.find( coin => coin.id === e.target.value );
+        const coinMarketData = await coinGeckoApi.CoinGecko.getCoin(coin.name.toLowerCase());
 
-//         setLeftCoin( selectedLeftCoin );
+        if (coinMarketData && coinMarketData.market_data && coinMarketData.market_data.current_price) {
+            setSelectedRightCurrentPrice(coinMarketData.market_data.current_price.usd);
+        }
+    }
 
-//         const valueConverted = converterCoinHelper( leftOption.value, selectedLeftCoin.current_price, rightCoin.current_price );
-        
-//         setRightOption( { value: valueConverted } );
-//     };
+    const handleOnClickInvertCoins = () => {
+        const leftCoin = Object.create(selectedLeftCoin);
+        const rightCoin = Object.create(selectedRightCoin);
 
-//     const handleRightSelectChange = ( e ) => {
+        if (leftCoin && !isEmpty(leftCoin)) {
+            handleOnClickRightCoin(leftCoin);
+        }
 
-//         const selectedRightCoin = data.find( coin => coin.id === e.target.value );
-
-//         setRightCoin( selectedRightCoin );
-
-//         const valueConverted = converterCoinHelper( leftOption.value, leftCoin.current_price, selectedRightCoin.current_price );
-        
-//         setRightOption( { value: valueConverted } );
-//     };
-
-//     return (
-//         <div className="col-12 converter__box">
-//             <div className="row align-items-center">
-//                 <div className="col-3">
-//                     <input 
-//                         autoComplete="false"
-//                         className="form-control"
-//                         id="leftOption"
-//                         name="leftOption"
-//                         type="number" 
-//                         onChange={ handleLeftInputChange }
-//                         value={ leftOption.value }
-//                     />
-//                 </div>
-//                 <div className="col-2">
-//                     <select id="leftCoin" className="form-control" defaultValue={ leftCoin.id } onChange={ handleLeftSelectChange }>
-//                         {
-//                             data.map( coin => (
-//                                 <option 
-//                                     key={ coin.id }
-//                                     value={ coin.id }
-//                                 >
-//                                     { coin.symbol }
-//                                 </option>
-//                             ))
-//                         }
-//                     </select>
-//                 </div>
-//                 <div className="col-1 ml-1 mr-1 text-center">
-//                     <strong>=</strong>
-//                 </div>
-//                 <div className="col-3">
-//                     <input 
-//                         autoComplete="false"
-//                         className="form-control"
-//                         id="rightOption"
-//                         name="rightOption"
-//                         type="number" 
-//                         onChange={ handleRightInputChange }
-//                         value={ rightOption.value }
-//                     />
-//                 </div>
-//                 <div className="col-2">
-//                     <select id="rightCoin" className="form-control" value={ rightCoin.id } onChange={ handleRightSelectChange }>
-//                         {
-//                             data.map( coin => (
-//                                 <option 
-//                                     key={ coin.id }
-//                                     value={ coin.id }
-//                                 >
-//                                     { coin.symbol }
-//                                 </option>
-//                             ))
-//                         }
-//                     </select>
-//                 </div>
-//             </div>
-//             <div className="text-center mt-5 converter__result pt-5 pb-5">
-//                 <h1>
-//                     <span className="mr-2">
-//                         <img src={ leftCoin.image } className="mr-2" alt="symbol" width="35" height="35" />
-//                         { leftOption.value }
-//                         <strong className="text-uppercase ml-2">{ leftCoin.symbol }</strong>
-//                     </span>
-
-//                     <strong>=</strong> 
-
-//                     <span className="ml-2 mr-1">
-//                         { rightOption.value }
-//                         {/* <NumberFormat value={ rightOption.value } displayType={ 'text' } thousandSeparator={ true } decimalScale={ 2 } />         */}
-//                         <strong className="text-uppercase ml-2">{ rightCoin.symbol }</strong>
-//                         <img src={ rightCoin.image } className="ml-2" alt="symbol" width="35" height="35" />
-//                     </span>
-//                     </h1>
-//             </div>
-//         </div>
-//     )
-// }
+        if (rightCoin && !isEmpty(rightCoin)) {
+            handleOnClickLeftCoin(rightCoin);
+        }
+    }
 
 
+    return (
+        <Container 
+            maxWidth="md" 
+            sx={{
+                border: '1px solid grey',
+                marginTop: 2,
+                paddingTop: 4,
+                paddingBottom: 4,
+            }}
+        >
+            <Grid container mb={ 2 }>
+                <Grid 
+                    item
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}
+                >
+                    
+                    <TextField 
+                        id="value-to-convert"
+                        color="primary"
+                        placeholder='Add amount to convert'
+                        label="Amount to convert"
+                        onChange={ handleOnChangeAmountToConvert }
+                        value={ amountToConvert }
+                        name="value-to-convert"
+                        InputProps={{
+                            inputComponent: NumberFormatCustom as any,
+                        }}
+                    />
+                    <Typography
+                        component="span"
+                        ml={ 1 }
+                    >
+                        {
+                            selectedLeftCoin ? selectedLeftCoin.symbol.toUpperCase() : ''
+                        }    
+                    </Typography>
+                </Grid>
+            </Grid>
+            <Grid container>
+                <Grid item xs={ 12 } md={ 5 }>
+
+                    <TextField 
+                        autoComplete="off"
+                        id="left-coin" 
+                        label="Search a crypto coin..." 
+                        color="primary" 
+                        placeholder="Search a crypto coin..." 
+                        onChange={ handleOnChangeLeftCoin }
+                        sx={{
+                            width: '100%'
+                        }}
+                        onBlur={ handleOnBlurLeftCoin }
+                        value={ leftCoinDescription }
+                    />
+                    {
+                        showLeftSearch && 
+                        <div className="converter-results">
+                            <ul className="list-group converter-items mt-3">
+                            {
+                                leftCoinSearchItems && leftCoinSearchItems.coins &&
+                                leftCoinSearchItems.coins.map( coin => (
+                                    // TODO: Must be a component
+                                    <li
+                                        key={ coin.id }
+                                        className={`list-group-item list-group-item-action pointer`  }
+                                        onClick={ () => handleOnClickLeftCoin( coin ) }
+                                    >
+                                        <span
+                                            onClick={ () => handleOnClickLeftCoin( coin ) }
+                                        >{ coin.name }</span>
+                                        {
+                                            coin.market_cap_rank && 
+                                                <span className="ml-1"><small>({ coin.market_cap_rank })</small></span>
+                                        }
+                                        <p 
+                                            style={{
+                                                fontSize: '12px'
+                                            }}
+                                        >
+                                            <span className="mr-1">
+                                                <img src={ coin.thumb } alt="coin logo" />
+                                            </span>
+                                            <span>
+                                                { coin.symbol }
+                                            </span>
+                                        </p>
+                                    </li>
+                                ))
+                            }
+                            </ul>
+                        </div>
+                    }
+
+
+
+
+                </Grid>
+                <Box 
+                    item 
+                    xs={ 12 } 
+                    md={ 2 } 
+                    component={ Grid }
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Button
+                        variant="contained"
+                        sx={{
+                            minWidth: '80%'
+                        }}
+                        onClick={ handleOnClickInvertCoins }
+                    >
+                        <CompareArrowsIcon fontSize="large" />
+                    </Button>
+                </Box>
+                <Grid item xs={ 12 } md={ 5 }>
+                    <TextField 
+                        autoComplete="off"
+                        id="right-coin" 
+                        label="Search a crypto coin..." 
+                        color="primary" 
+                        placeholder="Search a crypto coin..." 
+                        sx={{
+                            width: '100%'
+                        }}
+                        onChange={ handleOnChangeRightCoin }
+                        onBlur={ handleOnBlurRightCoin }
+                        value={ rightCoinDescription }
+                    />
+
+                    {
+                        showRightSearch && 
+                        <div className="converter-results">
+                            <ul className="list-group converter-items mt-3">
+                            {
+                                rightCoinSearchItems && rightCoinSearchItems.coins &&
+                                rightCoinSearchItems.coins.map( coin => (
+                                    // TODO: Must be a component
+                                    <li
+                                        key={ coin.id }
+                                        className={`list-group-item list-group-item-action pointer`  }
+                                        onClick={ () => handleOnClickRightCoin( coin ) }
+                                    >
+                                        <span
+                                            onClick={ () => handleOnClickRightCoin( coin ) }
+                                        >{ coin.name }</span>
+                                        {
+                                            coin.market_cap_rank && 
+                                                <span className="ml-1"><small>({ coin.market_cap_rank })</small></span>
+                                        }
+                                        <p 
+                                            style={{
+                                                fontSize: '12px'
+                                            }}
+                                        >
+                                            <span className="mr-1">
+                                                <img src={ coin.thumb } alt="coin logo" />
+                                            </span>
+                                            <span>
+                                                { coin.symbol }
+                                            </span>
+                                        </p>
+                                    </li>
+                                ))
+                            }
+                            </ul>
+                        </div>
+                    }
+
+                </Grid>
+
+            </Grid>
+            {
+                selectedLeftCoin && selectedRightCoin && selectedLeftCurrentPrice && selectedRightCurrentPrice &&
+                <Grid 
+                    container
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}
+                    mt={ 1 }
+                >
+                    <Grid item>
+                        <Typography
+                            component="span"
+                        >
+                            {`${ amountToConvert } ${ selectedLeftCoin.name } (${ selectedLeftCoin.symbol })`}
+                        </Typography>
+                        <Typography
+                            component="span"
+                            ml={ 2 }
+                            mr={ 2 }
+                        >
+                            =
+                        </Typography>
+                        <Typography
+                            component="span"
+                            variant="h6"
+                            mr={ 1 }
+                        >
+                            { selectedLeftCurrentPrice && selectedRightCurrentPrice && converterCoinHelper(parseInt(amountToConvert), selectedLeftCurrentPrice, selectedRightCurrentPrice) }
+                        </Typography>
+                        <Typography
+                            component="span"
+                        >
+                            { `${ selectedRightCoin.name } (${selectedRightCoin.symbol.toUpperCase() })` }
+                        </Typography>
+                    </Grid>
+                </Grid>
+            }
+        </Container>
+    )
+}

@@ -30,7 +30,7 @@ const CoinGecko = {
     markets: ( orderBy:string ): Promise<ICoinGeckoInterfaces[]> => 
         requests.get(`/coins/markets?vs_currency=usd&order=${ orderBy }&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C14d`),
     searchCoins: ( description:string ): Promise<ISearchCoinInterfaces> => 
-        requests.get(`/search?query=${ description }`),
+        requests.get(`/search?query=${ description }`), // TODO: IT returns not only coins, also categories, nft.. change that to return only coins in this case
     getCoin: ( id:string ): Promise<ICoin> => 
         requests.get(`/coins/${ id }?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`)
 }
