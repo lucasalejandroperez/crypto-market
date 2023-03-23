@@ -2,20 +2,17 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import coinGeckoApi from "../../api/coinGeckoApi";
-import { Coin, ISearchCoinInterfaces } from "../../models/searchCoinInterfaces";
+import { Coin } from "../../models/searchCoinInterfaces";
 import { isEmpty } from "../../utilities/jsValidations";
 import { NumberFormatCustom } from "../NumberFormatCustom/NumberFormatCustom";
 import { ConvertedCoinText } from "./ConvertedCoinText";
 import { SearchCoin } from "./SearchCoin";
+import { useDebouncedSearch } from "../../hooks/Converter/useDebouncedSearch";
+import { useAmountToConvert } from "../../hooks/Converter/useAmountToConvert";
 
 import "./ConverterBox.css";
 
 export const ConverterBox = () => {
-  const [amountToConvert, setAmountToConvert] = useState<string>("1");
-  const [leftCoinSearchItems, setLeftCoinSearchItems] =
-    useState<ISearchCoinInterfaces>();
-  const [rightCoinSearchItems, setRightCoinSearchItems] =
-    useState<ISearchCoinInterfaces>();
   const [showLeftSearch, setShowLeftSearch] = useState(false);
   const [showRightSearch, setShowRightSearch] = useState(false);
   const [selectedLeftCoin, setSelectedLeftCoin] = useState<Coin | null>(null);
@@ -26,17 +23,17 @@ export const ConverterBox = () => {
   const [selectedRightCoin, setSelectedRightCoin] = useState<Coin | null>(null);
   const [leftCoinDescription, setLeftCoinDescription] = useState("");
   const [rightCoinDescription, setRightCoinDescription] = useState("");
-  const debouncedRef = useRef<NodeJS.Timeout>();
-  const debouncedRightRef = useRef<NodeJS.Timeout>();
 
   const blurLeftCoinRef = useRef<NodeJS.Timeout>();
   const blurRightCoinRef = useRef<NodeJS.Timeout>();
+  const { amountToConvert, handleOnChangeAmountToConvert } =
+    useAmountToConvert("1");
 
-  const handleOnChangeAmountToConvert = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    setAmountToConvert(event.target.value);
-  };
+  const { searchItems: searchItemsLeft, handleSearch: handleSearchLeftCoin } =
+    useDebouncedSearch();
+
+  const { searchItems: searchItemsRight, handleSearch: handleSearchRightCoin } =
+    useDebouncedSearch();
 
   const handleOnChangeLeftCoin = (event: ChangeEvent<HTMLInputElement>) => {
     const description = event.target.value;
@@ -48,19 +45,7 @@ export const ConverterBox = () => {
     }
 
     setShowLeftSearch(true);
-
-    if (debouncedRef.current) {
-      clearTimeout(debouncedRef.current);
-    }
-
-    debouncedRef.current = setTimeout(async () => {
-      try {
-        const items = await coinGeckoApi.CoinGecko.searchCoins(description);
-        setLeftCoinSearchItems(items);
-      } catch (error) {
-        console.log(error);
-      }
-    }, 1000);
+    handleSearchLeftCoin(description);
   };
 
   const handleOnClickLeftCoin = async (coin: Coin) => {
@@ -99,19 +84,7 @@ export const ConverterBox = () => {
     }
 
     setShowRightSearch(true);
-
-    if (debouncedRightRef.current) {
-      clearTimeout(debouncedRightRef.current);
-    }
-
-    debouncedRightRef.current = setTimeout(async () => {
-      try {
-        const items = await coinGeckoApi.CoinGecko.searchCoins(description);
-        setRightCoinSearchItems(items);
-      } catch (error) {
-        console.log(error);
-      }
-    }, 1000);
+    handleSearchRightCoin(description);
   };
 
   const handleOnBlurRightCoin = () => {
@@ -200,7 +173,7 @@ export const ConverterBox = () => {
             label="Search a crypto coin..."
             value={leftCoinDescription}
             showResults={showLeftSearch}
-            searchItems={leftCoinSearchItems?.coins}
+            searchItems={searchItemsLeft?.coins}
             onBlur={handleOnBlurLeftCoin}
             onChange={handleOnChangeLeftCoin}
             onClick={handleOnClickLeftCoin}
@@ -231,7 +204,7 @@ export const ConverterBox = () => {
             label="Search a crypto coin..."
             value={rightCoinDescription}
             showResults={showRightSearch}
-            searchItems={rightCoinSearchItems?.coins}
+            searchItems={searchItemsRight?.coins}
             onBlur={handleOnBlurRightCoin}
             onChange={handleOnChangeRightCoin}
             onClick={handleOnClickRightCoin}
