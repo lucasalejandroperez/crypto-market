@@ -3,7 +3,6 @@ export interface IContractPlatformType {
     valor: unknown;
 }
 
-// TODO: Move to another place, in the same component of contracts maybe?
 export const getArrayContracts = ( contracts:any ): IContractPlatformType[] => {
     let contractList:IContractPlatformType[] = [];
 

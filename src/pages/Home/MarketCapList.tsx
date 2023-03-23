@@ -30,7 +30,13 @@ export const MarketCapList = () => {
   }
 
   if (error) {
-    return <section>Error fetching market cap: {error.message}</section>;
+    return (
+      <section>
+        {`Error fetching market cap. It's possible that you need to wait until the
+        API from coingecko response... try later.`}
+        : {error.message}
+      </section>
+    );
   }
 
   return (

@@ -52,12 +52,9 @@ export const ContractCoinDetail = ({ platforms, links, categories }: Props) => {
               />
             </span>
           ))}
-      {
-        // TODO: To show this, It must be more than 1
-        !isInvalidContract(platforms) && (
-          <SelectContract platforms={platforms} />
-        )
-      }
+      {!isInvalidContract(platforms) && (
+        <SelectContract platforms={platforms} />
+      )}
 
       <Box
         sx={{
