@@ -1,110 +1,7 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import coinGeckoApi from "../../api/coinGeckoApi";
-import { Coin } from "../../models/searchCoinInterfaces";
 import { isEmpty } from "../../utilities/jsValidations";
-import { useDebouncedSearch } from "./useDebouncedSearch";
+import { useCoinSearch } from "./useCoinSearch";
 
 export const useConverter = () => {
-    const [showLeftSearch, setShowLeftSearch] = useState(false);
-    const [showRightSearch, setShowRightSearch] = useState(false);
-    const [selectedLeftCoin, setSelectedLeftCoin] = useState<Coin | null>(null);
-    const [selectedLeftCurrentPrice, setSelectedLeftCurrentPrice] =
-        useState<number>();
-    const [selectedRightCurrentPrice, setSelectedRightCurrentPrice] =
-        useState<number>();
-    const [selectedRightCoin, setSelectedRightCoin] = useState<Coin | null>(null);
-    const [leftCoinDescription, setLeftCoinDescription] = useState("");
-    const [rightCoinDescription, setRightCoinDescription] = useState("");
-
-        const blurLeftCoinRef = useRef<NodeJS.Timeout>();
-    const blurRightCoinRef = useRef<NodeJS.Timeout>();
-
-        const { searchItems: searchItemsLeft, handleSearch: handleSearchLeftCoin } =
-        useDebouncedSearch();
-
-    const { searchItems: searchItemsRight, handleSearch: handleSearchRightCoin } =
-        useDebouncedSearch();
-
-    const handleOnChangeLeftCoin = (event: ChangeEvent<HTMLInputElement>) => {
-        const description = event.target.value;
-        setLeftCoinDescription(description);
-
-        if (description.length < 2) {
-        setShowLeftSearch(false);
-        return;
-        }
-
-        setShowLeftSearch(true);
-        handleSearchLeftCoin(description);
-    };
-
-    const handleOnClickLeftCoin = async (coin: Coin) => {
-        setSelectedLeftCoin(coin);
-        setLeftCoinDescription(`${coin.name} (${coin.symbol.toUpperCase()})`);
-
-        const coinMarketData = await coinGeckoApi.CoinGecko.getCoin(
-        coin.name.toLowerCase()
-        );
-
-        if (
-        coinMarketData &&
-        coinMarketData.market_data &&
-        coinMarketData.market_data.current_price
-        ) {
-        setSelectedLeftCurrentPrice(coinMarketData.market_data.current_price.usd);
-        }
-    };
-
-    const handleOnBlurLeftCoin = () => {
-        if (blurLeftCoinRef.current) {
-        clearTimeout(blurLeftCoinRef.current);
-        }
-        blurLeftCoinRef.current = setTimeout(() => {
-        setShowLeftSearch(false);
-        }, 500);
-    };
-
-    const handleOnChangeRightCoin = (event: ChangeEvent<HTMLInputElement>) => {
-        const description = event.target.value;
-        setRightCoinDescription(description);
-
-        if (description.length < 2) {
-        setShowRightSearch(false);
-        return;
-        }
-
-        setShowRightSearch(true);
-        handleSearchRightCoin(description);
-    };
-
-    const handleOnBlurRightCoin = () => {
-        if (blurRightCoinRef.current) {
-        clearTimeout(blurRightCoinRef.current);
-        }
-        blurRightCoinRef.current = setTimeout(() => {
-        setShowRightSearch(false);
-        }, 500);
-    };
-
-    const handleOnClickRightCoin = async (coin: Coin) => {
-        setSelectedRightCoin(coin);
-        setRightCoinDescription(`${coin.name} (${coin.symbol.toUpperCase()})`);
-
-        const coinMarketData = await coinGeckoApi.CoinGecko.getCoin(
-        coin.name.toLowerCase()
-        );
-
-        if (
-        coinMarketData &&
-        coinMarketData.market_data &&
-        coinMarketData.market_data.current_price
-        ) {
-        setSelectedRightCurrentPrice(
-            coinMarketData.market_data.current_price.usd
-        );
-        }
-    };
-
     const handleOnClickInvertCoins = () => {
         const leftCoin = Object.create(selectedLeftCoin);
         const rightCoin = Object.create(selectedRightCoin);
@@ -118,17 +15,26 @@ export const useConverter = () => {
         }
     };
 
-    useEffect(() => {
-        return () => {
-        if (blurLeftCoinRef.current) {
-            clearTimeout(blurLeftCoinRef.current);
-        }
+    const leftSearch = useCoinSearch();
+    const rightSearch = useCoinSearch();
 
-        if (blurRightCoinRef.current) {
-            clearTimeout(blurRightCoinRef.current);
-        }
-        };
-    }, []);
+    const {selectedCoin: selectedLeftCoin} = leftSearch;
+    const {searchItems: searchItemsLeft} = leftSearch;
+    const {showSearch: showLeftSearch} = leftSearch;
+    const {selectedCurrentPrice: selectedLeftCurrentPrice} = leftSearch;
+    const {coinDescription: leftCoinDescription} = leftSearch;
+    const {handleOnChange: handleOnChangeLeftCoin} = leftSearch;
+    const {handleOnClick: handleOnClickLeftCoin} = leftSearch;
+    const {handleOnBlur: handleOnBlurLeftCoin} = leftSearch;
+
+    const {selectedCoin: selectedRightCoin} = rightSearch;
+    const {searchItems: searchItemsRight} = rightSearch;
+    const {showSearch: showRightSearch} = rightSearch;
+    const {selectedCurrentPrice: selectedRightCurrentPrice} = rightSearch;
+    const {coinDescription: rightCoinDescription} = rightSearch;
+    const {handleOnChange: handleOnChangeRightCoin} = rightSearch;
+    const {handleOnClick: handleOnClickRightCoin} = rightSearch;
+    const {handleOnBlur: handleOnBlurRightCoin} = rightSearch;
 
     return {
         selectedLeftCoin,

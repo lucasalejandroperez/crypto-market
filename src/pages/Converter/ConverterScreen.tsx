@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
-import { ConverterBox } from "../../components/Converter/ConverterBox";
+import { Converter } from "../../components/Converter/Converter";
 
-export const Converter = () => {
+export const ConverterScreen = () => {
   return (
     <Container
       maxWidth="md"
@@ -12,7 +12,7 @@ export const Converter = () => {
         paddingBottom: 4,
       }}
     >
-      <ConverterBox />
+      <Converter />
     </Container>
   );
 };

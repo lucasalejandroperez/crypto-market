@@ -8,7 +8,7 @@ import { useConverter } from "../../hooks/Converter/useConverter";
 
 import "./ConverterBox.css";
 
-export const ConverterBox = () => {
+export const Converter = () => {
   const { amountToConvert, handleOnChangeAmountToConvert } =
     useAmountToConvert("1");
 
