@@ -1,75 +1,64 @@
-import { TextField } from '@mui/material'
-import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
-import { MarketCapContext } from '../../context/marketCap/MarketCapContext';
-import { SearchResults } from './SearchResults';
+import { TextField } from "@mui/material";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
+import { MarketCapContext } from "../../context/marketCap/MarketCapContext";
+import { SearchResults } from "./SearchResults";
 
-import './SearchBar.css';
+import "./SearchBar.css";
 
 export const SearchBar = () => {
+  const debouncedRef = useRef<NodeJS.Timeout>();
 
-    const debouncedRef = useRef<NodeJS.Timeout>();
+  const { setSearchDescription, searchDescription, showSearch, setShowSearch } =
+    useContext(MarketCapContext);
 
-    const { setSearchDescription, searchDescription, showSearch, setShowSearch } = useContext( MarketCapContext );
+  //const [showSearch, setShowSearch] = useState( false );
 
-    //const [showSearch, setShowSearch] = useState( false );
+  // useEffect(() => {
 
-    // useEffect(() => {
-    
-    //   return () => {
-    //     setShowSearch( false );
-    //   }
-    // }, [])
-    
-    
+  //   return () => {
+  //     setShowSearch( false );
+  //   }
+  // }, [])
 
-    const handleOnChange = ( event: ChangeEvent<HTMLInputElement> ) => {
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const description = event.target.value;
 
-        const description = event.target.value;
-
-        if (description.length < 2) {
-            setShowSearch( false );
-            return;
-        }
-        
-        setShowSearch( true );
-        
-        if ( debouncedRef.current ) {
-            clearTimeout( debouncedRef.current );
-        }
-
-        debouncedRef.current = setTimeout(() => {
-            setSearchDescription( event.target.value );
-        }, 1000 );
-
+    if (description.length < 2) {
+      setShowSearch(false);
+      return;
     }
 
-    const handleOnBlur = () => {
-        
-        // TODO: Move to context?
-        // el problema es que cuando hace un onBlur y le pone que se oculte, 
-        // no se termina ejecutando la accion en el search result para que haga la navegacion
-        setTimeout(() => {
-            setShowSearch( false );
-        }, 500);
+    setShowSearch(true);
+
+    if (debouncedRef.current) {
+      clearTimeout(debouncedRef.current);
     }
 
-    return (
-        <>
-            <div className="search-container">
-                <TextField 
-                    id="outlined-basic" 
-                    label="Search a crypto coin..." 
-                    color="primary" 
-                    placeholder="Search a crypto coin..." 
-                    variant="filled" 
-                    onChange={ handleOnChange }
-                    onBlur={ handleOnBlur }
-                />
-                {
-                    showSearch &&
-                    searchDescription.length > 2 && <SearchResults />
-                }
-            </div>
-        </>
-    )
-}
+    debouncedRef.current = setTimeout(() => {
+      setSearchDescription(event.target.value);
+    }, 1000);
+  };
+
+  const handleOnBlur = () => {
+    setTimeout(() => {
+      setShowSearch(false);
+    }, 500);
+  };
+
+  return (
+    <>
+      <div className="search-container">
+        <TextField
+          id="outlined-basic"
+          label="Search a crypto coin..."
+          color="primary"
+          placeholder="Search a crypto coin..."
+          variant="filled"
+          onChange={handleOnChange}
+          onBlur={handleOnBlur}
+        />
+        {showSearch && searchDescription.length > 2 && <SearchResults />}
+      </div>
+    </>
+  );
+};
