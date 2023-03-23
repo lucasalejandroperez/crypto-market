@@ -10,11 +10,10 @@ import {
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import coinGeckoApi from "../../api/coinGeckoApi";
 import { Coin, ISearchCoinInterfaces } from "../../models/searchCoinInterfaces";
-
-import "./ConverterBox.css";
 import { isEmpty } from "../../utilities/jsValidations";
 import { NumberFormatCustom } from "../NumberFormatCustom/NumberFormatCustom";
 import { converterCoinHelper } from "../../utilities/coinHelper";
+import "./ConverterBox.css";
 
 export const ConverterBox = () => {
   const [amountToConvert, setAmountToConvert] = useState<string>("1");
