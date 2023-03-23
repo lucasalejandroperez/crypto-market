@@ -1,23 +1,13 @@
 import NumberFormat from "react-number-format";
 import { consts } from "../../consts/consts";
 import { ICoinGeckoInterfaces } from "../../models/coinGeckoInterfaces";
-import { setCirculatingSupplyPercentage } from "../../utilities/coinHelper";
+import {
+  setCirculatingSupplyPercentage,
+  setPercentageClass,
+} from "../../utilities/coinHelper";
 import "./MarketCapItem.css";
 
 export const MarketCapItem = (coin: ICoinGeckoInterfaces) => {
-  // TODO: Move to another file (utils) create interface for return
-  const setPercentageClass = (number: number) => {
-    const symbolNumber = Math.sign(number);
-
-    if (symbolNumber === 1) {
-      return "general_greenPercentage";
-    } else if (symbolNumber === -1) {
-      return "general_redPercentage";
-    } else {
-      return "general_blackPercentage";
-    }
-  };
-
   return (
     <div className="mb-1 container coinMarketItem__box">
       <div className="row">

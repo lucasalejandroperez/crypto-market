@@ -236,7 +236,6 @@ export const MarketCapList = () => {
                     lg={2}
                     display={{ xs: "block" }}
                   >
-                    {/* TODO: It must be a component */}
                     <Box
                       component="span"
                       sx={{

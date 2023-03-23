@@ -27,7 +27,7 @@ export const SearchResults = () => {
 
   useEffect(() => {
     refetch();
-  }, [searchDescription]);
+  }, [refetch]);
 
   const handleCoinClick = async (coin: Coin) => {
     navigate(`/coin/${coin.id}`);
