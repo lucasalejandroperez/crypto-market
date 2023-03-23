@@ -6,7 +6,7 @@ import { SearchCoin } from "./SearchCoin";
 import { useAmountToConvert } from "../../hooks/Converter/useAmountToConvert";
 import { useConverter } from "../../hooks/Converter/useConverter";
 
-import "./ConverterBox.css";
+import "./Converter.css";
 
 export const Converter = () => {
   const { amountToConvert, handleOnChangeAmountToConvert } =
