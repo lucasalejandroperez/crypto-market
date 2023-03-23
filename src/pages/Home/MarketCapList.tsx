@@ -19,7 +19,7 @@ export const MarketCapList = () => {
 
   useEffect(() => {
     refetch();
-  }, [orderBy]);
+  }, [refetch]);
 
   const handleCoinDetailOnClick = (id: string) => {
     navigate(`coin/${id}`);

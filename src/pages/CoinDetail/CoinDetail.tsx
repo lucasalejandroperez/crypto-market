@@ -2,23 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 
-import { Box, Chip, Container, Grid, Tooltip, Typography } from "@mui/material";
+import { Chip, Container, Grid, Tooltip, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import InfoIcon from "@mui/icons-material/Info";
 
 import CoinGecko from "../../api/coinGeckoApi";
 import { ICoin } from "../../models/coinInterfaces";
-import { CopyToClipboard } from "../../components/CopyToClipboard/CopyToClipboard";
 import { consts } from "../../consts/consts";
 import { RenderHTMLComponent } from "../../components/RenderHTMLComponent/RenderHTMLComponent";
-import {
-  getArrayContracts,
-  IContractPlatformType,
-  shortenContract,
-  getPercentageCirculatingSupply,
-} from "../../utilities/contractUtils";
-import { SelectContract } from "../../components/SelectContract/SelectContract";
-import LinearWithValueLabel from "../../components/LinearProgressWithLabel/LinearWithValueLabel";
 import { setPositiveNegativeClass } from "../../utilities/numbers";
 import { PriceCoin } from "../../components/Coin/PriceCoin";
 import { ContractCoinDetail } from "../../components/Coin/ContractCoinDetail";
@@ -45,19 +36,6 @@ export const CoinDetail = () => {
         });
     }
   }, [params.coinId]);
-
-  const isInvalidContract = (contracts: any): boolean => {
-    let isInvalid = false;
-
-    for (const [key, value] of Object.entries(contracts)) {
-      if (key.trim() === "" && value === "") {
-        isInvalid = true;
-        break;
-      }
-    }
-
-    return isInvalid;
-  };
 
   return (
     <>

@@ -8,22 +8,11 @@ import { Loader } from "../Loader/Loader";
 import "./SearchBar.css";
 
 export const SearchResults = () => {
-  const { searchDescription, showSearch, setShowSearch } =
-    useContext(MarketCapContext);
+  const { searchDescription, setShowSearch } = useContext(MarketCapContext);
 
   const navigate = useNavigate();
 
-  const {
-    data,
-    error,
-    isLoading,
-    isError,
-    isSuccess,
-    status,
-    isIdle,
-    isFetching,
-    refetch,
-  } = useSearchCoin(searchDescription);
+  const { data, error, isLoading, refetch } = useSearchCoin(searchDescription);
 
   useEffect(() => {
     refetch();

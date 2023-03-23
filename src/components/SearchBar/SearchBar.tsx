@@ -11,15 +11,6 @@ export const SearchBar = () => {
   const { setSearchDescription, searchDescription, showSearch, setShowSearch } =
     useContext(MarketCapContext);
 
-  //const [showSearch, setShowSearch] = useState( false );
-
-  // useEffect(() => {
-
-  //   return () => {
-  //     setShowSearch( false );
-  //   }
-  // }, [])
-
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const description = event.target.value;
 

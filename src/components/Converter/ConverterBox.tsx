@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -15,8 +15,6 @@ import "./ConverterBox.css";
 import { isEmpty } from "../../utilities/jsValidations";
 import { NumberFormatCustom } from "../NumberFormatCustom/NumberFormatCustom";
 import { converterCoinHelper } from "../../utilities/coinHelper";
-
-// test
 
 export const ConverterBox = () => {
   const [amountToConvert, setAmountToConvert] = useState<string>("1");
