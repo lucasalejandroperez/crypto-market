@@ -1,7 +1,18 @@
-import { ConverterBox } from "../../components/Converter/ConverterBox"
+import { Container } from "@mui/material";
+import { ConverterBox } from "../../components/Converter/ConverterBox";
 
 export const Converter = () => {
   return (
-    <ConverterBox />
-  )
-}
+    <Container
+      maxWidth="md"
+      sx={{
+        border: "1px solid grey",
+        marginTop: 2,
+        paddingTop: 4,
+        paddingBottom: 4,
+      }}
+    >
+      <ConverterBox />
+    </Container>
+  );
+};

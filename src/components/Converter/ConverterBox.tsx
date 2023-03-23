@@ -1,18 +1,13 @@
-import { ChangeEvent, useRef, useState } from "react";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import coinGeckoApi from "../../api/coinGeckoApi";
 import { Coin, ISearchCoinInterfaces } from "../../models/searchCoinInterfaces";
 import { isEmpty } from "../../utilities/jsValidations";
 import { NumberFormatCustom } from "../NumberFormatCustom/NumberFormatCustom";
-import { converterCoinHelper } from "../../utilities/coinHelper";
+import { ConvertedCoinText } from "./ConvertedCoinText";
+import { SearchCoin } from "./SearchCoin";
+
 import "./ConverterBox.css";
 
 export const ConverterBox = () => {
@@ -33,6 +28,9 @@ export const ConverterBox = () => {
   const [rightCoinDescription, setRightCoinDescription] = useState("");
   const debouncedRef = useRef<NodeJS.Timeout>();
   const debouncedRightRef = useRef<NodeJS.Timeout>();
+
+  const blurLeftCoinRef = useRef<NodeJS.Timeout>();
+  const blurRightCoinRef = useRef<NodeJS.Timeout>();
 
   const handleOnChangeAmountToConvert = (
     event: ChangeEvent<HTMLInputElement>
@@ -65,12 +63,6 @@ export const ConverterBox = () => {
     }, 1000);
   };
 
-  const handleOnBlurLeftCoin = () => {
-    setTimeout(() => {
-      setShowLeftSearch(false);
-    }, 500);
-  };
-
   const handleOnClickLeftCoin = async (coin: Coin) => {
     setSelectedLeftCoin(coin);
     setLeftCoinDescription(`${coin.name} (${coin.symbol.toUpperCase()})`);
@@ -86,6 +78,15 @@ export const ConverterBox = () => {
     ) {
       setSelectedLeftCurrentPrice(coinMarketData.market_data.current_price.usd);
     }
+  };
+
+  const handleOnBlurLeftCoin = () => {
+    if (blurLeftCoinRef.current) {
+      clearTimeout(blurLeftCoinRef.current);
+    }
+    blurLeftCoinRef.current = setTimeout(() => {
+      setShowLeftSearch(false);
+    }, 500);
   };
 
   const handleOnChangeRightCoin = (event: ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +115,10 @@ export const ConverterBox = () => {
   };
 
   const handleOnBlurRightCoin = () => {
-    setTimeout(() => {
+    if (blurRightCoinRef.current) {
+      clearTimeout(blurRightCoinRef.current);
+    }
+    blurRightCoinRef.current = setTimeout(() => {
       setShowRightSearch(false);
     }, 500);
   };
@@ -151,16 +155,20 @@ export const ConverterBox = () => {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      if (blurLeftCoinRef.current) {
+        clearTimeout(blurLeftCoinRef.current);
+      }
+
+      if (blurRightCoinRef.current) {
+        clearTimeout(blurRightCoinRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <Container
-      maxWidth="md"
-      sx={{
-        border: "1px solid grey",
-        marginTop: 2,
-        paddingTop: 4,
-        paddingBottom: 4,
-      }}
-    >
+    <>
       <Grid container mb={2}>
         <Grid
           item
@@ -188,53 +196,15 @@ export const ConverterBox = () => {
       </Grid>
       <Grid container>
         <Grid item xs={12} md={5}>
-          <TextField
-            autoComplete="off"
-            id="left-coin"
+          <SearchCoin
             label="Search a crypto coin..."
-            color="primary"
-            placeholder="Search a crypto coin..."
-            onChange={handleOnChangeLeftCoin}
-            sx={{
-              width: "100%",
-            }}
-            onBlur={handleOnBlurLeftCoin}
             value={leftCoinDescription}
+            showResults={showLeftSearch}
+            searchItems={leftCoinSearchItems?.coins}
+            onBlur={handleOnBlurLeftCoin}
+            onChange={handleOnChangeLeftCoin}
+            onClick={handleOnClickLeftCoin}
           />
-          {showLeftSearch && (
-            <div className="converter-results">
-              <ul className="list-group converter-items mt-3">
-                {leftCoinSearchItems &&
-                  leftCoinSearchItems.coins &&
-                  leftCoinSearchItems.coins.map((coin) => (
-                    <li
-                      key={coin.id}
-                      className={`list-group-item list-group-item-action pointer`}
-                      onClick={() => handleOnClickLeftCoin(coin)}
-                    >
-                      <span onClick={() => handleOnClickLeftCoin(coin)}>
-                        {coin.name}
-                      </span>
-                      {coin.market_cap_rank && (
-                        <span className="ml-1">
-                          <small>({coin.market_cap_rank})</small>
-                        </span>
-                      )}
-                      <p
-                        style={{
-                          fontSize: "12px",
-                        }}
-                      >
-                        <span className="mr-1">
-                          <img src={coin.thumb} alt="coin logo" />
-                        </span>
-                        <span>{coin.symbol}</span>
-                      </p>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          )}
         </Grid>
         <Box
           item
@@ -257,54 +227,15 @@ export const ConverterBox = () => {
           </Button>
         </Box>
         <Grid item xs={12} md={5}>
-          <TextField
-            autoComplete="off"
-            id="right-coin"
+          <SearchCoin
             label="Search a crypto coin..."
-            color="primary"
-            placeholder="Search a crypto coin..."
-            sx={{
-              width: "100%",
-            }}
-            onChange={handleOnChangeRightCoin}
-            onBlur={handleOnBlurRightCoin}
             value={rightCoinDescription}
+            showResults={showRightSearch}
+            searchItems={rightCoinSearchItems?.coins}
+            onBlur={handleOnBlurRightCoin}
+            onChange={handleOnChangeRightCoin}
+            onClick={handleOnClickRightCoin}
           />
-
-          {showRightSearch && (
-            <div className="converter-results">
-              <ul className="list-group converter-items mt-3">
-                {rightCoinSearchItems &&
-                  rightCoinSearchItems.coins &&
-                  rightCoinSearchItems.coins.map((coin) => (
-                    <li
-                      key={coin.id}
-                      className={`list-group-item list-group-item-action pointer`}
-                      onClick={() => handleOnClickRightCoin(coin)}
-                    >
-                      <span onClick={() => handleOnClickRightCoin(coin)}>
-                        {coin.name}
-                      </span>
-                      {coin.market_cap_rank && (
-                        <span className="ml-1">
-                          <small>({coin.market_cap_rank})</small>
-                        </span>
-                      )}
-                      <p
-                        style={{
-                          fontSize: "12px",
-                        }}
-                      >
-                        <span className="mr-1">
-                          <img src={coin.thumb} alt="coin logo" />
-                        </span>
-                        <span>{coin.symbol}</span>
-                      </p>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          )}
         </Grid>
       </Grid>
       {selectedLeftCoin &&
@@ -319,30 +250,17 @@ export const ConverterBox = () => {
             }}
             mt={1}
           >
-            <Grid item>
-              <Typography component="span">
-                {`${amountToConvert} ${selectedLeftCoin.name} (${selectedLeftCoin.symbol})`}
-              </Typography>
-              <Typography component="span" ml={2} mr={2}>
-                =
-              </Typography>
-              <Typography component="span" variant="h6" mr={1}>
-                {selectedLeftCurrentPrice &&
-                  selectedRightCurrentPrice &&
-                  converterCoinHelper(
-                    parseInt(amountToConvert),
-                    selectedLeftCurrentPrice,
-                    selectedRightCurrentPrice
-                  )}
-              </Typography>
-              <Typography component="span">
-                {`${
-                  selectedRightCoin.name
-                } (${selectedRightCoin.symbol.toUpperCase()})`}
-              </Typography>
-            </Grid>
+            <ConvertedCoinText
+              amount={amountToConvert}
+              nameLeftCoin={selectedLeftCoin.name}
+              symbolLeftCoin={selectedLeftCoin.symbol}
+              priceLeftCoin={selectedLeftCurrentPrice}
+              nameRightCoin={selectedRightCoin.name}
+              symbolRightCoin={selectedRightCoin.symbol}
+              priceRightCoin={selectedRightCurrentPrice}
+            />
           </Grid>
         )}
-    </Container>
+    </>
   );
 };
