@@ -1,16 +1,13 @@
-import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
+import { Box, Grid, Typography } from "@mui/material";
 import { useContext, useEffect } from "react";
 import { Loader } from "../../components/Loader/Loader";
 import { consts } from "../../consts/consts";
 import { MarketCapContext } from "../../context/marketCap/MarketCapContext";
-import { useMarketCap, useMutateMarketData } from "../../hooks/useMarketCap";
+import { useMarketCap } from "../../hooks/useMarketCap";
 import { ICoinGeckoInterfaces } from "../../models/coinGeckoInterfaces";
-import { MarketCapItem } from "./MarketCapItem";
 import { setPositiveNegativeClass } from "../../utilities/numbers";
 import { grey } from "@mui/material/colors";
-import LinearWithValueLabel from "../../components/LinearProgressWithLabel/LinearWithValueLabel";
-import { getPercentageCirculatingSupply } from "../../utilities/contractUtils";
 import { useNavigate } from "react-router-dom";
 import { CirculatingSupply } from "../../components/CirculatingSupply/CirculatingSupply";
 
@@ -18,17 +15,7 @@ export const MarketCapList = () => {
   const { orderBy } = useContext(MarketCapContext);
   const navigate = useNavigate();
 
-  const {
-    data: marketCap,
-    error,
-    isLoading,
-    isError,
-    isSuccess,
-    status,
-    isIdle,
-    isFetching,
-    refetch,
-  } = useMarketCap(orderBy);
+  const { data: marketCap, error, isLoading, refetch } = useMarketCap(orderBy);
 
   useEffect(() => {
     refetch();
@@ -368,25 +355,11 @@ export const MarketCapList = () => {
                     lg={2}
                     display={{ xs: "none", sm: "none", md: "block" }}
                   >
-                    {/* TODO: It must be a component */}
-
                     <CirculatingSupply
                       circulating_supply={coin.circulating_supply}
                       max_supply={coin.max_supply}
                       symbol={coin.symbol}
                     />
-
-                    {/* <Typography>
-                                        { coin.circulating_supply.toLocaleString(undefined, { maximumFractionDigits:2 }) } { coin.symbol.toUpperCase() }
-                                    </Typography>
-                                    {
-                                        coin.circulating_supply && coin.max_supply &&
-                                            <Box sx={{
-                                                width: '90%'
-                                            }}>
-                                                <LinearWithValueLabel value={ getPercentageCirculatingSupply(coin.circulating_supply, coin.max_supply) } />
-                                            </Box>
-                                    } */}
                   </Box>
                   <Box
                     component={Grid}
